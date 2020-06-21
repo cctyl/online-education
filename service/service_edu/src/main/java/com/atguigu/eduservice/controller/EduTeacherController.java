@@ -34,7 +34,7 @@ public class EduTeacherController {
     EduTeacherService eduTeacherService;
 
     @ApiOperation("获取所有讲师列表")
-    @GetMapping("/")
+    @GetMapping("/list")
     public R findAllTeacher() {
 
 
