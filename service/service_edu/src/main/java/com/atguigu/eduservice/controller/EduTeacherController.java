@@ -93,21 +93,21 @@ public class EduTeacherController {
         //多个条件查询，但是有些条件可能没有，要怎么解决呢？用if一个个判断
         //动态sql技术
         //判断是否为空，不为空就拼接
-        if (!StringUtils.isEmpty(teacherQuery.getBegin())){
+        if (!StringUtils.isEmpty(teacherQuery.getBegin())) {
 
-            wrapper.gt("gmt_create",teacherQuery.getBegin());
+            wrapper.gt("gmt_create", teacherQuery.getBegin());
         }
-        if (!StringUtils.isEmpty(teacherQuery.getName())){
+        if (!StringUtils.isEmpty(teacherQuery.getName())) {
 
-            wrapper.like("name",teacherQuery.getName());
+            wrapper.like("name", teacherQuery.getName());
         }
 
-        if (!StringUtils.isEmpty(teacherQuery.getLevel())){
-            wrapper.eq("level",teacherQuery.getLevel());
+        if (!StringUtils.isEmpty(teacherQuery.getLevel())) {
+            wrapper.eq("level", teacherQuery.getLevel());
         }
-        if (!StringUtils.isEmpty(teacherQuery.getEnd())){
+        if (!StringUtils.isEmpty(teacherQuery.getEnd())) {
 
-            wrapper.lt("gmt_modified",teacherQuery.getEnd());
+            wrapper.lt("gmt_modified", teacherQuery.getEnd());
         }
 
 
@@ -115,21 +115,33 @@ public class EduTeacherController {
         List<EduTeacher> records = eduTeacherPage.getRecords();
         long total = eduTeacherPage.getTotal();
 
-        return R.ok().data("total",total).data("items",records);
+        return R.ok().data("total", total).data("items", records);
     }
 
 
     @PostMapping("/")
     @ApiOperation("新增讲师")
-    public R addTeacher(@RequestBody EduTeacher eduTeacher){
+    public R addTeacher(@RequestBody EduTeacher eduTeacher) {
 
         boolean save = eduTeacherService.save(eduTeacher);
-        if (save){
+        if (save) {
             return R.ok();
-        }else {
+        } else {
             return R.error();
         }
 
     }
+
+    @ApiOperation("根据id查询讲师")
+    @GetMapping("/{id}")
+    public R findTeacherById(@PathVariable("id") Long id) {
+
+        EduTeacher byId = eduTeacherService.getById(id);
+        return R.ok().data("item", byId);
+
+
+    }
+
+
 }
 
