@@ -134,7 +134,7 @@ public class EduTeacherController {
 
     @ApiOperation("根据id查询讲师")
     @GetMapping("/{id}")
-    public R findTeacherById(@PathVariable("id") Long id) {
+    public R findTeacherById(@PathVariable("id") String id) {
 
         EduTeacher byId = eduTeacherService.getById(id);
         return R.ok().data("item", byId);
@@ -142,6 +142,20 @@ public class EduTeacherController {
 
     }
 
+
+    @ApiOperation(value = "根据ID修改讲师")
+    @PutMapping("{id}")
+    public R updateById(
+            @ApiParam(name = "id", value = "讲师ID", required = true)
+            @PathVariable String id,
+
+            @ApiParam(name = "teacher", value = "讲师对象", required = true)
+            @RequestBody EduTeacher teacher) {
+
+        teacher.setId(id);
+        eduTeacherService.updateById(teacher);
+        return R.ok();
+    }
 
 }
 
