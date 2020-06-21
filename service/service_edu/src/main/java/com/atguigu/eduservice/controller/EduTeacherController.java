@@ -34,7 +34,7 @@ public class EduTeacherController {
     EduTeacherService eduTeacherService;
 
     @ApiOperation("获取所有讲师列表")
-    @GetMapping("/list")
+    @GetMapping("/")
     public R findAllTeacher() {
 
 
@@ -118,5 +118,18 @@ public class EduTeacherController {
         return R.ok().data("total",total).data("items",records);
     }
 
+
+    @PostMapping("/")
+    @ApiOperation("新增讲师")
+    public R addTeacher(@RequestBody EduTeacher eduTeacher){
+
+        boolean save = eduTeacherService.save(eduTeacher);
+        if (save){
+            return R.ok();
+        }else {
+            return R.error();
+        }
+
+    }
 }
 
