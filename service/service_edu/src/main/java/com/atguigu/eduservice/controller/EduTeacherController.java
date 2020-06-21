@@ -5,6 +5,7 @@ import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduTeacher;
 import com.atguigu.eduservice.entity.vo.TeacherQuery;
 import com.atguigu.eduservice.service.EduTeacherService;
+import com.atguigu.exceptionhandler.GuliException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
@@ -136,6 +137,10 @@ public class EduTeacherController {
     @GetMapping("/{id}")
     public R findTeacherById(@PathVariable("id") String id) {
 
+        if (StringUtils.isEmpty(id)) {
+
+            throw new GuliException(400, "输入有误");
+        }
         EduTeacher byId = eduTeacherService.getById(id);
         return R.ok().data("item", byId);
 
@@ -156,6 +161,9 @@ public class EduTeacherController {
         eduTeacherService.updateById(teacher);
         return R.ok();
     }
+
+
+
 
 }
 

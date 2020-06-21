@@ -17,9 +17,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.atguigu</groupId>
             <artifactId>service_base</artifactId>
+            <groupId>com.atguigu</groupId>
             <version>0.0.1-SNAPSHOT</version>
+
         </dependency>
 
 
