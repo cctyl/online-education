@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 @Slf4j
@@ -16,6 +17,15 @@ public class GlobalExceptionHandler {
     public R error(Exception e){
         log.warn("出现了异常，已经被全局异常处理捕获："+e.toString());
 
-        return R.error().message("执行了全局异常处理");
+        return R.error().message("啊哦，出错了");
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    public R methodArgumentTypeMismatchException(Exception e){
+        log.warn("出现了类型转换异常，已经被全局异常处理捕获："+e.toString());
+
+        return R.error().message("啊哦，出错了，你输入的数据格式不对");
     }
 }
