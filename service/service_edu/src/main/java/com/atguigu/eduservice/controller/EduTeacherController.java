@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduservice/teacher")
+@Slf4j
 public class EduTeacherController {
 
     @Autowired
@@ -159,11 +161,31 @@ public class EduTeacherController {
 
         teacher.setId(id);
         eduTeacherService.updateById(teacher);
+
         return R.ok();
     }
 
 
+    @GetMapping("/exception/{id}")
+    @ApiOperation("异常测试方法")
+    public R getException(@PathVariable("id") Long id){
 
+        if (id>10){
+
+            throw  new GuliException(400,"id太大了");
+        }
+        if (id<0){
+            throw  new GuliException(400,"id太小了");
+        }
+
+        try {
+            int a = 10 / 0;
+        } catch (Exception e) {
+            throw new GuliException(400,"id不能为0");
+        }
+
+        return R.ok().message("id刚刚好");
+    }
 
 }
 

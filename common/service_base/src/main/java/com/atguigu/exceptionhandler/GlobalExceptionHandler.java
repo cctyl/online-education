@@ -1,5 +1,6 @@
 package com.atguigu.exceptionhandler;
 
+import com.atguigu.commonutils.ExceptionUtil;
 import com.atguigu.commonutils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)//当出现 Exception.class  的异常时，就执行这个方法
     @ResponseBody   //为了返回数据
     public R error(Exception e){
-        log.warn("出现了异常，已经被全局异常处理捕获："+e.toString());
+        log.error("出现了异常，已经被全局异常处理捕获："+ExceptionUtil.getMessage(e));
 
         return R.error().message("啊哦，出错了");
     }
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
     public R methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e){
-        log.warn("出现了类型转换异常，已经被全局异常处理捕获："+e.toString());
+        log.warn("出现了类型转换异常，已经被全局异常处理捕获："+ExceptionUtil.getMessage(e));
 
         return R.error().message("啊哦，出错了，你输入的数据格式不对");
     }
@@ -35,7 +36,8 @@ public class GlobalExceptionHandler {
     public R guliException(GuliException e){
         String message = e.getMessage();
         Integer code = e.getCode();
-        log.warn("出现了自定义异常，已经被捕获："+e.toString());
+        log.error("出现了自定义异常GuliException，已经被捕获："+ ExceptionUtil.getMessage(e));
+
 
         return R.error().message(message).data("code",code);
     }

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @MapperScan("com.atguigu.eduservice.mapper")
@@ -21,5 +23,11 @@ public class EduConfig {
     public PaginationInterceptor paginationInterceptor(){
 
         return new PaginationInterceptor();
+    }
+
+    @Bean
+    public RestTemplate restTemplate(){
+
+        return new RestTemplate();
     }
 }
