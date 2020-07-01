@@ -3,14 +3,12 @@ package com.atguigu.eduservice.controller;
 import com.atguigu.commonutils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api("处理教师登陆的类")
 @RequestMapping("/eduservice/user")
+@CrossOrigin //解决跨域问题
 public class EduLoginController {
 
     @PostMapping("/login")
