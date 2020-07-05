@@ -1,0 +1,17 @@
+server:
+  port: 8002
+
+spring:
+  application:
+    name: service-oss
+  profiles:
+    active: dev
+
+
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      keyid: LTAI4G924VXmuRqoboULUR2d
+      keysecret: nyerRBTzGz86DGFchIM9NcnfvxWk5J
+      bucketname: online-tyl-edu
