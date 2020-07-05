@@ -31,6 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/eduservice/teacher")
 @Slf4j
+@CrossOrigin
 public class EduTeacherController {
 
     @Autowired
@@ -113,7 +114,7 @@ public class EduTeacherController {
             wrapper.lt("gmt_modified", teacherQuery.getEnd());
         }
 
-
+        wrapper.orderByDesc("gmt_modified");
         eduTeacherService.page(eduTeacherPage, wrapper);
         List<EduTeacher> records = eduTeacherPage.getRecords();
         long total = eduTeacherPage.getTotal();

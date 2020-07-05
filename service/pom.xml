@@ -11,6 +11,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>service_edu</module>
+        <module>service_oss</module>
+
     </modules>
 
     <artifactId>service</artifactId>
