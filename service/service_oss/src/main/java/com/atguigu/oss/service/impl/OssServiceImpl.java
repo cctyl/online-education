@@ -34,6 +34,7 @@ public class OssServiceImpl implements OssService {
     @Override
     public String uploadAvatar(MultipartFile file) {
 
+
         String basePath ="https://"+ constantProperties.getBucketname()+"."+constantProperties.getEndpoint()+"/";
         // Endpoint以杭州为例，其它Region请按实际情况填写。
         String endpoint = constantProperties.getEndpoint();
@@ -48,7 +49,7 @@ public class OssServiceImpl implements OssService {
         //对文件进行分类存放，按照日期进行分类
         String today = new DateTime().toString("yyyy/MM/dd");
         String realPath =today+ "/"+originalFilename;
-
+        log.debug("上传了一个文件："+originalFilename);
 
         try {
             // 上传文件流。
