@@ -37,6 +37,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         BeanUtils.copyProperties(courseInfoVo,eduCourse);
         int insert = baseMapper.insert(eduCourse);
 
+        courseInfoVo.setId(eduCourse.getId());//为了方便controller返回id 而设置
         if (insert<=0){
             throw new GuliException(20001,"添加课程基本信息出错");
         }

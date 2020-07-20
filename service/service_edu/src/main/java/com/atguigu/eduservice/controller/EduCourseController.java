@@ -31,7 +31,7 @@ public class EduCourseController {
     public R saveCourse(@ApiParam("课程信息封装类") @RequestBody CourseInfoVo courseInfoVo){
 
         eduCourseService.saveCourseInfo(courseInfoVo);
-        return R.ok();
+        return R.ok().data("id",courseInfoVo.getId());
     }
 
 }

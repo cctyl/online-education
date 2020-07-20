@@ -1,5 +1,9 @@
 package com.atguigu;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.atguigu.excel.DemoData;
+import com.atguigu.excel.ExcelListener;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -10,6 +14,9 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class test {
 
@@ -24,7 +31,7 @@ public class test {
         String projectPath = System.getProperty("user.dir");
         System.out.println(projectPath);
         //设置输出路径，建议写绝对路径，因为不容易出错
-        gc.setOutputDir("G:\\JAVA\\vblog\\guli_parent\\service\\service_edu"+ "/src/main/java");
+        gc.setOutputDir("E:\\IDEAProject\\guli_parent\\service\\service_edu"+ "/src/main/java");
         gc.setAuthor("tyl");//作者
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖，如果写true，就会把原有文件里的内容覆盖掉
@@ -62,7 +69,7 @@ public class test {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("edu_teacher"); //表的名称，多张表用逗号隔开
+        strategy.setInclude("edu_course","edu_course_description","edu_chapter","edu_video"); //表的名称，多张表用逗号隔开
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
@@ -78,5 +85,40 @@ public class test {
         // 6、执行
         mpg.execute();
     }
+
+
+    @Test
+    public void main2(){
+        //1.设置文件路径和文件名称
+        String filename = "G:\\write.xlsx";
+
+        //构建数据，等会插入表格中
+        List<DemoData> demoDataList = new ArrayList<>();
+        demoDataList.add(new DemoData(1,"张三"));
+        demoDataList.add(new DemoData(2,"李四"));
+        demoDataList.add(new DemoData(3,"王五"));
+        demoDataList.add(new DemoData(4,"赵柳"));
+        demoDataList.add(new DemoData(5,"钱富"));
+
+        //2.调用easyexcel里面的方法实现写操作
+        // 参数1 文件名和路径       参数2 和表格对应的实体类的class
+        // sheet 是设置表格底下的分页的名字
+        // doWrite 里面传一个List<DemoData>  ,也就是一堆的DemoData对象，直接传进去就会被写入
+         EasyExcel.write(filename, DemoData.class).sheet("学生列表").doWrite(demoDataList);
+
+    }
+
+    @Test
+    public void main3(){
+        //1.设置文件路径和文件名称
+        String filename = "G:\\write.xlsx";
+        //2.调用方法实现读取
+        //参数1： 文件路径     参数2： 对应的实体类 class   参数3：new一个excel监听器
+        //后面的.sheet().doRead(); 直接写上去即可
+        EasyExcel.read(filename,DemoData.class,new ExcelListener()).sheet().doRead();
+
+    }
+
+
 }
 
