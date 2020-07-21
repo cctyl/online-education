@@ -2,6 +2,8 @@ package com.atguigu;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.atguigu.eduservice.entity.EduChapter;
+import com.atguigu.eduservice.entity.chapter.ChapterVo;
 import com.atguigu.excel.DemoData;
 import com.atguigu.excel.ExcelListener;
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -14,11 +16,12 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class test {
+public class test<T,E> {
 
     @Test
     public void main1() {
@@ -119,6 +122,39 @@ public class test {
 
     }
 
+    @Test
+    public void main5(){
+       List<EduChapter> eduChapters = new ArrayList<>();
+       eduChapters.add(new EduChapter().setTitle("课程1").setId("1"));
+       eduChapters.add(new EduChapter().setTitle("课程2").setId("2"));
+       eduChapters.add(new EduChapter().setTitle("课程3").setId("3"));
+       eduChapters.add(new EduChapter().setTitle("课程4").setId("4"));
+       eduChapters.add(new EduChapter().setTitle("课程5").setId("5"));
+       eduChapters.add(new EduChapter().setTitle("课程6").setId("6"));
+       eduChapters.add(new EduChapter().setTitle("课程7").setId("7"));
+       eduChapters.add(new EduChapter().setTitle("课程8").setId("8"));
 
+       List<ChapterVo> chapterVos = new ArrayList<>();
+
+       //失败，泛型不太会用
+
+    }
+
+
+    /**
+     * 将List<E> 转换为 List<T>
+     * @param oldList
+     * @param newObj
+     * @return
+     */
+    public List<Object> copyValueToList(List<Object> oldList,Object newObj){
+        List<Object> newList = new ArrayList<>();
+        for (Object e : oldList) {
+            BeanUtils.copyProperties(e,newObj);
+            newList.add(newObj);
+        }
+
+        return newList;
+    }
 }
 
