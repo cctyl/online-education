@@ -17,3 +17,11 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format:  yyyy-MM-dd HH:mm:ss   # 这个配置了之后，返回的json数据里面的时间，就会根据这个来展示
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    root: info

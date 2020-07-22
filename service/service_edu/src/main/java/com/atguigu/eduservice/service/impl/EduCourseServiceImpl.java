@@ -7,6 +7,7 @@ import com.atguigu.eduservice.mapper.EduCourseDescriptionMapper;
 import com.atguigu.eduservice.mapper.EduCourseMapper;
 import com.atguigu.eduservice.service.EduCourseService;
 import com.atguigu.exceptionhandler.GuliException;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,37 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (insert2<=0){
             throw new GuliException(20001,"添加课程描述信息出错");
         }
+    }
+
+    /**
+     * 修改课程信息
+     * @param id
+     */
+    @Override
+    public void updateCourseInfo(String id,CourseInfoVo courseInfoVo) {
+        //1.实体类转换，便于后续修改
+        EduCourse eduCourse = new EduCourse();
+        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        eduCourse.setId(id);
+
+        //2.执行修改
+        int i = baseMapper.updateById(eduCourse);
+        if (i<=0){
+
+            throw new GuliException(20001,"修改课程信息出错");
+        }
+
+
+        //3. 转换课程简介
+        EduCourseDescription eduCourseDescription = new EduCourseDescription();
+        eduCourseDescription.setId(id);
+        eduCourseDescription.setDescription(courseInfoVo.getDescription());
+        int i2 = courseDescriptionMapper.updateById(eduCourseDescription);
+        if (i2<=0){
+            throw new GuliException(20001,"修改课程简介出错");
+
+        }
+
+
     }
 }

@@ -34,5 +34,21 @@ public class EduCourseController {
         return R.ok().data("id",courseInfoVo.getId());
     }
 
+
+    /**
+     * 修改课程信息
+     * @param id 课程id
+     * @param courseInfoVo
+     * @return
+     */
+    @PutMapping("/{id}")
+    public R updateCourseInfo(@ApiParam("课程ID") @PathVariable("id") String id,
+                              @ApiParam("课程信息封装类") @RequestBody  CourseInfoVo courseInfoVo
+                              ){
+
+        eduCourseService.updateCourseInfo(id,courseInfoVo);
+        return R.ok();
+    }
+
 }
 

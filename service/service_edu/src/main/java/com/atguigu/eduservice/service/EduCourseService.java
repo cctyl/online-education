@@ -15,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface EduCourseService extends IService<EduCourse> {
 
     void saveCourseInfo(CourseInfoVo courseInfoVo);
+
+    void updateCourseInfo(String id,CourseInfoVo courseInfoVo);
 }

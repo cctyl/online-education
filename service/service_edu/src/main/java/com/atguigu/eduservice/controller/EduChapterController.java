@@ -7,11 +7,7 @@ import com.atguigu.eduservice.service.EduChapterService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/eduservice/chapter")
+@CrossOrigin
 public class EduChapterController {
     @Autowired
     EduChapterService eduChapterService;
@@ -36,6 +33,9 @@ public class EduChapterController {
         List<ChapterVo>  chapterInfos = eduChapterService.getCourseChapterInfo(courseId);
         return R.ok().data("list",chapterInfos);
     }
+
+
+
 
 
 }
