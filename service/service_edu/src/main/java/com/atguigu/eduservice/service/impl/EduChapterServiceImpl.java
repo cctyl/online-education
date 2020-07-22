@@ -59,7 +59,7 @@ public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, Ed
             //3.2查询这个ChapterVo下面的VideoVo
             for (EduVideo eduVideo : eduVideoList) {
 
-                if (eduVideo.getChapterId()==eduChapter.getId()){
+                if (eduVideo.getChapterId().equals(eduChapter.getId())){
                     VideoVo videoVo = new VideoVo();
                     BeanUtils.copyProperties(eduVideo,videoVo);
                     childList.add(videoVo);
