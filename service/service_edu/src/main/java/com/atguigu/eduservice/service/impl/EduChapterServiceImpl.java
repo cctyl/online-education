@@ -30,8 +30,8 @@ public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, Ed
     EduVideoMapper eduVideoMapper;
 
     /**
-     * 查询章节信息
-     *
+     * 查询当前课程的章节信息
+     * MERCURY_66B8
      * @return
      */
     @Override
@@ -43,45 +43,41 @@ public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, Ed
         chapterWrapper.orderByAsc("gmt_modified");
         List<EduChapter> eduChapters = baseMapper.selectList(chapterWrapper);
 
-        //1.1转换为ChapterVo
+
+        //2.根据课程ID查询所有的小节信息
+        List<EduVideo> eduVideoList = eduVideoMapper.selectList(new QueryWrapper<EduVideo>().eq("course_id", courseId));
+
+        //3.1转换为ChapterVo
         List<ChapterVo> finalList = new ArrayList<>();
         for (EduChapter eduChapter : eduChapters) {
             ChapterVo chapterVo = new ChapterVo();
             BeanUtils.copyProperties(eduChapter, chapterVo);
 
+            //VideoVo 集合
+            List<VideoVo> childList = new ArrayList<>();
 
-            //1.2查询这个ChapterVo下面的VideoVo
-            List<EduVideo> chapter_id = eduVideoMapper.selectList(new QueryWrapper<EduVideo>().eq("chapter_id", eduChapter.getId()));
+            //3.2查询这个ChapterVo下面的VideoVo
+            for (EduVideo eduVideo : eduVideoList) {
 
-            List<VideoVo> videoVoList = copyValueToList(chapter_id, new VideoVo());
+                if (eduVideo.getChapterId()==eduChapter.getId()){
+                    VideoVo videoVo = new VideoVo();
+                    BeanUtils.copyProperties(eduVideo,videoVo);
+                    childList.add(videoVo);
+                }
+            }
 
-            chapterVo.setChildren(videoVoList);
 
+
+            //3.3给这个ChapterVo注入 childrenList
+            chapterVo.setChildren(childList);
+
+            //3.4 转换完成
             finalList.add(chapterVo);
-
         }
 
 
         return finalList;
     }
-
-
-    /**
-     * 将List<E> 转换为 List<T>
-     * @param oldList
-     * @param newObj
-     * @return
-     */
-    public List<VideoVo> copyValueToList(List<EduVideo> oldList, VideoVo newObj){
-        List<VideoVo> newList = new ArrayList<>();
-        for (EduVideo e : oldList) {
-            BeanUtils.copyProperties(e,newObj);
-            newList.add(newObj);
-        }
-
-        return newList;
-    }
-
 
 
 
