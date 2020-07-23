@@ -2,6 +2,7 @@ package com.atguigu.eduservice.controller;
 
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.entity.EduChapter;
 import com.atguigu.eduservice.entity.chapter.ChapterVo;
 import com.atguigu.eduservice.service.EduChapterService;
 import io.swagger.annotations.ApiOperation;
@@ -28,14 +29,23 @@ public class EduChapterController {
 
     @GetMapping("/{id}")
     @ApiOperation("根据id获取课程章节信息")
-    public R  getCourseChapter(@ApiParam("课程ID") @PathVariable("id") String courseId){
+    public R getCourseChapter(@ApiParam("课程ID") @PathVariable("id") String courseId) {
 
-        List<ChapterVo>  chapterInfos = eduChapterService.getCourseChapterInfo(courseId);
-        return R.ok().data("list",chapterInfos);
+        List<ChapterVo> chapterInfos = eduChapterService.getCourseChapterInfo(courseId);
+        return R.ok().data("list", chapterInfos);
     }
 
 
+    @PostMapping("/")
+    @ApiOperation("添加章节信息")
+    public R saveChapterInfo(@RequestBody @ApiParam("章节信息") EduChapter eduChapter) {
 
+
+        eduChapterService.save(eduChapter);
+        return R.ok();
+
+
+    }
 
 
 }
