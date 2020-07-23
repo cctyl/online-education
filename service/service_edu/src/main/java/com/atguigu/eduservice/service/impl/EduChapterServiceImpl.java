@@ -40,7 +40,7 @@ public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, Ed
         //1.根据课程id查询所有的章节信息
         QueryWrapper<EduChapter> chapterWrapper = new QueryWrapper<>();
         chapterWrapper.eq("course_id", courseId);
-        chapterWrapper.orderByAsc("gmt_modified");
+        chapterWrapper.orderByAsc("sort");
         List<EduChapter> eduChapters = baseMapper.selectList(chapterWrapper);
 
 

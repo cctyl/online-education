@@ -49,6 +49,7 @@ public class EduCourseController {
                               @ApiParam("课程信息封装类") @RequestBody  CourseInfoVo courseInfoVo
                               ){
 
+
         eduCourseService.updateCourseInfo(id,courseInfoVo);
         return R.ok();
     }
