@@ -13,6 +13,7 @@ public class MPMetaObject implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("gmtCreate",new Date(),metaObject);
         this.setFieldValByName("gmtModified",new Date(),metaObject);
+        this.setFieldValByName("isDeleted",0,metaObject);
     }
 
     @Override
