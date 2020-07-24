@@ -39,14 +39,25 @@ public class EduChapterController {
     @PostMapping("/")
     @ApiOperation("添加章节信息")
     public R saveChapterInfo(@RequestBody @ApiParam("章节信息") EduChapter eduChapter) {
-
-
         eduChapterService.save(eduChapter);
         return R.ok();
-
-
     }
 
+
+
+    @PutMapping("/")
+    @ApiOperation("修改章节信息")
+    public R updateChapterInfo(@RequestBody @ApiParam("章节信息") EduChapter eduChapter) {
+        eduChapterService.updateById(eduChapter);
+        return R.ok();
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除章节信息")
+    public R deleteChapter(@PathVariable("id") @ApiParam("章节信息") String id) {
+        eduChapterService.removeById(id);
+        return R.ok();
+    }
 
 }
 
