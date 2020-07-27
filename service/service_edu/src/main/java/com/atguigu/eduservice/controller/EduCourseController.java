@@ -72,6 +72,17 @@ public class EduCourseController {
     }
 
 
+    @PutMapping("/publish/{id}")
+    @ApiOperation("发布课程")
+    public R publishCourse(@PathVariable("id") @ApiParam("课程ID") String id){
+
+        eduCourseService.getPublish(id);
+        return R.ok();
+    }
+
+
+
+
 
 
 }

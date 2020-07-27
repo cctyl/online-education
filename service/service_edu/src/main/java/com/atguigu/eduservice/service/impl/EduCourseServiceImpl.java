@@ -127,4 +127,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
         return courseInfoById;
     }
+
+    /**
+     * 发布课程，就是将status字段改为Normal
+     * @param id
+     */
+    @Override
+    public void getPublish(String id) {
+        EduCourse eduCourse = new EduCourse();
+        eduCourse.setId(id);
+        eduCourse.setStatus("Normal");
+        int i = baseMapper.updateById(eduCourse);
+        if (i<=0){
+            throw new GuliException(20001,"发布失败，没有这个课程");
+        }
+
+    }
 }
