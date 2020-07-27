@@ -27,6 +27,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Autowired
     EduCourseDescriptionMapper courseDescriptionMapper;
 
+    @Autowired
+    EduCourseMapper eduCourseMapper;
+
     /**
      * 添加课程信息
      * 向两张表添加数据
@@ -108,5 +111,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourseDescription eduCourseDescription = courseDescriptionMapper.selectById(id);
         courseInfoVo.setDescription(eduCourseDescription.getDescription());
         return courseInfoVo;
+    }
+
+    /**
+     * 获取即将发布的课程的信息
+     * @param id
+     * @return
+     */
+    @Override
+    public CourseInfoVo getPublishCourseInfoById(String id) {
+
+        CourseInfoVo courseInfoById = eduCourseMapper.getCourseInfoById(id);
+        if (courseInfoById==null){
+            throw new GuliException(20001,"查询的课程不存在");
+        }
+        return courseInfoById;
     }
 }

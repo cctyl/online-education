@@ -1,5 +1,6 @@
 package com.atguigu.eduservice.entity.chapter;
 
+import com.atguigu.eduservice.entity.EduVideo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,5 +24,5 @@ public class ChapterVo {
     @ApiModelProperty(value = "显示排序")
     private Integer sort;
 
-    List<VideoVo> children = new ArrayList<>();
+    List<EduVideo> children = new ArrayList<>();
 }

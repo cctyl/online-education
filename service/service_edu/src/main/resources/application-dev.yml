@@ -22,6 +22,8 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+  mapper-locations: classpath:com/atguigu/eduservice/mapper/xml/*.xml
+
 logging:
   level:
     root: info

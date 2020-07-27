@@ -61,5 +61,18 @@ public class EduCourseController {
         CourseInfoVo courseInfoVo = eduCourseService.getCourseInfoById(id);
         return R.ok().data("courseInfo",courseInfoVo);
     }
+
+
+    @GetMapping("/publish/{id}")
+    @ApiOperation("获取课程信息")
+    public R getPublishCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id){
+
+        CourseInfoVo courseInfoVo = eduCourseService.getPublishCourseInfoById(id);
+        return R.ok().data("courseInfo",courseInfoVo);
+    }
+
+
+
+
 }
 

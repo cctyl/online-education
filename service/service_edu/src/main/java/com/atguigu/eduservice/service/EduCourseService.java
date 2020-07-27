@@ -19,4 +19,7 @@ public interface EduCourseService extends IService<EduCourse> {
     void updateCourseInfo(String id,CourseInfoVo courseInfoVo);
 
     CourseInfoVo getCourseInfoById(String id);
+
+
+    CourseInfoVo getPublishCourseInfoById(String id);
 }
