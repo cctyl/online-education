@@ -3,14 +3,22 @@ package com.atguigu.eduservice.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduCourse;
+import com.atguigu.eduservice.entity.EduTeacher;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
+import com.atguigu.eduservice.entity.vo.CourseQuery;
+import com.atguigu.eduservice.entity.vo.TeacherQuery;
 import com.atguigu.eduservice.service.EduCourseService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -80,6 +88,47 @@ public class EduCourseController {
         return R.ok();
     }
 
+
+
+    @PostMapping("/pageCourseCondition/{current}/{limit}")
+    @ApiOperation("课程组合条件查询")
+    public R pageListByCondition(@ApiParam("当前页") @PathVariable("current") Integer current,
+                                 @ApiParam("每页显示的记录数") @PathVariable("limit") Integer limit,
+                                 @ApiParam("组合查询条件") @RequestBody(required = false)CourseQuery courseQuery
+                                 ) {
+
+        //创建page对象
+        Page<EduTeacher> eduTeacherPage = new Page<>(current, limit);
+
+        //创建条件
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        //多个条件查询，但是有些条件可能没有，要怎么解决呢？用if一个个判断
+        //动态sql技术
+        //判断是否为空，不为空就拼接
+        if (!StringUtils.isEmpty(teacherQuery.getBegin())) {
+
+            wrapper.gt("gmt_create", teacherQuery.getBegin());
+        }
+        if (!StringUtils.isEmpty(teacherQuery.getName())) {
+
+            wrapper.like("name", teacherQuery.getName());
+        }
+
+        if (!StringUtils.isEmpty(teacherQuery.getLevel())) {
+            wrapper.eq("level", teacherQuery.getLevel());
+        }
+        if (!StringUtils.isEmpty(teacherQuery.getEnd())) {
+
+            wrapper.lt("gmt_modified", teacherQuery.getEnd());
+        }
+
+        wrapper.orderByDesc("gmt_modified");
+        eduTeacherService.page(eduTeacherPage, wrapper);
+        List<EduTeacher> records = eduTeacherPage.getRecords();
+        long total = eduTeacherPage.getTotal();
+
+        return R.ok().data("total", total).data("items", records);
+    }
 
 
 
