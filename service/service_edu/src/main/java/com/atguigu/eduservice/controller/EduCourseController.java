@@ -98,34 +98,48 @@ public class EduCourseController {
                                  ) {
 
         //创建page对象
-        Page<EduTeacher> eduTeacherPage = new Page<>(current, limit);
+        Page<EduCourse> eduCoursePage = new Page<>(current, limit);
 
         //创建条件
-        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
-        //多个条件查询，但是有些条件可能没有，要怎么解决呢？用if一个个判断
-        //动态sql技术
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+
+
         //判断是否为空，不为空就拼接
-        if (!StringUtils.isEmpty(teacherQuery.getBegin())) {
+        if (!StringUtils.isEmpty(courseQuery.getTitle())) {
+            wrapper.like("title", courseQuery.getTitle());
 
-            wrapper.gt("gmt_create", teacherQuery.getBegin());
-        }
-        if (!StringUtils.isEmpty(teacherQuery.getName())) {
-
-            wrapper.like("name", teacherQuery.getName());
         }
 
-        if (!StringUtils.isEmpty(teacherQuery.getLevel())) {
-            wrapper.eq("level", teacherQuery.getLevel());
-        }
-        if (!StringUtils.isEmpty(teacherQuery.getEnd())) {
+        if (!StringUtils.isEmpty(courseQuery.getTeacherId())) {
+            wrapper.eq("teacher_id",courseQuery.getTeacherId());
 
-            wrapper.lt("gmt_modified", teacherQuery.getEnd());
+
+        }
+
+        if (courseQuery.getMaxPrice()!=null) {
+            wrapper.le("price",courseQuery.getMaxPrice());
+
+        }
+        if (courseQuery.getMinPrice()!=null) {
+
+            wrapper.ge("price",courseQuery.getMinPrice());
+        }
+
+
+        if (!StringUtils.isEmpty(courseQuery.getSubjectId())) {
+            wrapper.eq("subject_id", courseQuery.getSubjectId());
+
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getSubjectParentId())) {
+            wrapper.eq("subject_parent_id", courseQuery.getSubjectParentId());
+
         }
 
         wrapper.orderByDesc("gmt_modified");
-        eduTeacherService.page(eduTeacherPage, wrapper);
-        List<EduTeacher> records = eduTeacherPage.getRecords();
-        long total = eduTeacherPage.getTotal();
+        eduCourseService.page(eduCoursePage, wrapper);
+        List<EduCourse> records = eduCoursePage.getRecords();
+        long total = eduCoursePage.getTotal();
 
         return R.ok().data("total", total).data("items", records);
     }

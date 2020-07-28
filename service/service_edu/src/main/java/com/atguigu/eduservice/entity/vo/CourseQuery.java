@@ -18,8 +18,11 @@ public class CourseQuery {
     @ApiModelProperty(value = "课程讲师ID")
     private String teacherId;
 
-    @ApiModelProperty(value = "课程销售价格，设置为0则可免费观看")
-    private BigDecimal price;
+    @ApiModelProperty(value = "最低价")
+    private BigDecimal minPrice;
+
+    @ApiModelProperty(value = "最高价")
+    private BigDecimal maxPrice;
 
     @ApiModelProperty(value = "课程专业ID")
     private String subjectId;
