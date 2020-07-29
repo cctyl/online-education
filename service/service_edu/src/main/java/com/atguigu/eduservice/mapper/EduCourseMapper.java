@@ -20,7 +20,7 @@ public interface EduCourseMapper extends BaseMapper<EduCourse> {
             "  LEFT OUTER JOIN edu_teacher et ON ec.`teacher_id`=et.`id`" +
             "   LEFT OUTER JOIN edu_subject es1 ON ec.`subject_parent_id` = es1.`id`" +
             "   LEFT OUTER JOIN edu_subject es2 ON ec.`subject_id` = es2.`id`" +
-            "   WHERE ec.id=#{id}")
+            "   WHERE ec.id=#{id} and ec.is_deleted=0")
     public CourseInfoVo getCourseInfoById(String id);
 
 }
