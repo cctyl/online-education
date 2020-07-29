@@ -159,5 +159,20 @@ public class EduCourseController {
     }
 
 
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除课程")
+    public R deleteCourse(@PathVariable("id") @ApiParam("课程ID") String id) {
+
+
+        boolean b = eduCourseService.removeById(id);
+        if (b){
+            return R.ok();
+
+        }else {
+            return R.error();
+        }
+
+    }
 }
 
