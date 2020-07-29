@@ -13,11 +13,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import javafx.collections.transformation.SortedList;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,67 +40,67 @@ public class EduCourseController {
 
     @PostMapping("/")
     @ApiOperation("添加课程信息")
-    public R saveCourse(@ApiParam("课程信息封装类") @RequestBody CourseInfoVo courseInfoVo){
+    public R saveCourse(@ApiParam("课程信息封装类") @RequestBody CourseInfoVo courseInfoVo) {
 
         eduCourseService.saveCourseInfo(courseInfoVo);
-        return R.ok().data("id",courseInfoVo.getId());
+        return R.ok().data("id", courseInfoVo.getId());
     }
 
 
     /**
      * 修改课程信息
-     * @param id 课程id
+     *
+     * @param id           课程id
      * @param courseInfoVo
      * @return
      */
     @PutMapping("/{id}")
     @ApiOperation("修改课程信息")
     public R updateCourseInfo(@ApiParam("课程ID") @PathVariable("id") String id,
-                              @ApiParam("课程信息封装类") @RequestBody  CourseInfoVo courseInfoVo
-                              ){
+                              @ApiParam("课程信息封装类") @RequestBody CourseInfoVo courseInfoVo
+    ) {
 
 
-        eduCourseService.updateCourseInfo(id,courseInfoVo);
+        eduCourseService.updateCourseInfo(id, courseInfoVo);
         return R.ok();
     }
 
     @GetMapping("/{id}")
     @ApiOperation("获取课程信息")
-    public R getCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id){
+    public R getCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id) {
 
         CourseInfoVo courseInfoVo = eduCourseService.getCourseInfoById(id);
-        return R.ok().data("courseInfo",courseInfoVo);
+        return R.ok().data("courseInfo", courseInfoVo);
     }
 
 
     @GetMapping("/publish/{id}")
     @ApiOperation("获取课程信息")
-    public R getPublishCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id){
+    public R getPublishCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id) {
 
         CourseInfoVo courseInfoVo = eduCourseService.getPublishCourseInfoById(id);
-        return R.ok().data("courseInfo",courseInfoVo);
+        return R.ok().data("courseInfo", courseInfoVo);
     }
 
 
     @PutMapping("/publish/{id}")
     @ApiOperation("发布课程")
-    public R publishCourse(@PathVariable("id") @ApiParam("课程ID") String id){
+    public R publishCourse(@PathVariable("id") @ApiParam("课程ID") String id) {
 
         eduCourseService.getPublish(id);
         return R.ok();
     }
 
 
-
     @PostMapping("/pageCourseCondition/{current}/{limit}")
     @ApiOperation("课程组合条件查询")
     public R pageListByCondition(@ApiParam("当前页") @PathVariable("current") Integer current,
                                  @ApiParam("每页显示的记录数") @PathVariable("limit") Integer limit,
-                                 @ApiParam("组合查询条件") @RequestBody(required = false)CourseQuery courseQuery
-                                 ) {
+                                 @ApiParam("组合查询条件") @RequestBody(required = false) CourseQuery courseQuery
+    ) {
 
-        //创建page对象
         Page<EduCourse> eduCoursePage = new Page<>(current, limit);
+
 
         //创建条件
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
@@ -111,18 +113,18 @@ public class EduCourseController {
         }
 
         if (!StringUtils.isEmpty(courseQuery.getTeacherId())) {
-            wrapper.eq("teacher_id",courseQuery.getTeacherId());
+            wrapper.eq("teacher_id", courseQuery.getTeacherId());
 
 
         }
 
-        if (courseQuery.getMaxPrice()!=null) {
-            wrapper.le("price",courseQuery.getMaxPrice());
+        if (courseQuery.getMaxPrice() != null) {
+            wrapper.le("price", courseQuery.getMaxPrice());
 
         }
-        if (courseQuery.getMinPrice()!=null) {
+        if (courseQuery.getMinPrice() != null) {
 
-            wrapper.ge("price",courseQuery.getMinPrice());
+            wrapper.ge("price", courseQuery.getMinPrice());
         }
 
 
@@ -137,15 +139,24 @@ public class EduCourseController {
         }
 
         wrapper.orderByDesc("gmt_modified");
+
         eduCourseService.page(eduCoursePage, wrapper);
         List<EduCourse> records = eduCoursePage.getRecords();
+
+        //复杂查询暂时无法满足，用笨办法先查出来
+        List<CourseInfoVo> courseInfoVoList = new ArrayList<>();
+
+        for (EduCourse eduCourse : records) {
+
+            courseInfoVoList.add(eduCourseService.getPublishCourseInfoById(eduCourse.getId()));
+        }
+
+
         long total = eduCoursePage.getTotal();
+        return R.ok().data("total", total).data("items", courseInfoVoList);
 
-        return R.ok().data("total", total).data("items", records);
+
     }
-
-
-
 
 
 }

@@ -2,7 +2,10 @@ package com.atguigu.eduservice.service;
 
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
+import com.atguigu.eduservice.entity.vo.CourseQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,4 +27,7 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseInfoVo getPublishCourseInfoById(String id);
 
     void getPublish(String id);
+
+
+
 }
