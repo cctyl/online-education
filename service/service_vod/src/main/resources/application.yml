@@ -1,0 +1,21 @@
+# 服务端口
+server:
+  port: 8003
+  # 服务名
+spring:
+  application:
+    name: service_vod
+  profiles:
+    active: dev
+  #阿里云 vod
+  #不同的服务器，地址不同
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+aliyun:
+  vod:
+   file:
+    keyid: your accessKeyId
+    keysecret: your accessKeySecret
+
