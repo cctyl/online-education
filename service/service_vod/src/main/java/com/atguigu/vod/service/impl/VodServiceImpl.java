@@ -3,11 +3,15 @@ package com.atguigu.vod.service.impl;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.atguigu.commonutils.ExceptionUtil;
 import com.atguigu.exceptionhandler.GuliException;
 import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 
+import com.atguigu.vod.utils.InitVodClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,5 +53,23 @@ public class VodServiceImpl implements VodService {
 
             throw new GuliException(20001,ExceptionUtil.getMessage(e));
         }
+    }
+
+    @Override
+    public void removeVideoById(String id) {
+
+
+        try {
+            DefaultAcsClient defaultAcsClient = InitVodClient.initVodClient(constantProperties.getKeyid(), constantProperties.getKeysecret());
+            DeleteVideoRequest request = new DeleteVideoRequest();
+            request.setVideoIds(id);
+            defaultAcsClient.getAcsResponse(request);
+
+        } catch (ClientException e) {
+
+           throw new GuliException(20001,ExceptionUtil.getMessage(e));
+        }
+
+
     }
 }

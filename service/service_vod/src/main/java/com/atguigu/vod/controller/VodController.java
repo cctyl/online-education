@@ -2,20 +2,16 @@ package com.atguigu.vod.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.vod.service.VodService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/eduservice/video")
 @CrossOrigin
+@RequestMapping("/eduvod/video")
 public class VodController {
 
     @Autowired
@@ -32,6 +28,20 @@ public class VodController {
 
         String videoId = vodService.uploadVideo(file);
         return R.ok().data("videoId",videoId);
+
+    }
+
+    /**
+     * 根据id删除阿里云中的视频
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    @ApiOperation("删除视频")
+    public R removeVideoById(@ApiParam("id") @PathVariable("id") String id){
+
+        vodService.removeVideoById(id);
+        return R.ok();
 
     }
 
