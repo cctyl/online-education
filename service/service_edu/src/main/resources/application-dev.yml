@@ -17,6 +17,10 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format:  yyyy-MM-dd HH:mm:ss   # 这个配置了之后，返回的json数据里面的时间，就会根据这个来展示
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 mybatis-plus:
   configuration:
@@ -27,3 +31,6 @@ mybatis-plus:
 logging:
   level:
     root: info
+
+
+

@@ -4,9 +4,13 @@ server:
   # 服务名
 spring:
   application:
-    name: service_vod
+    name: service-vod
   profiles:
     active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848  #这个是注册中心的地址
   #阿里云 vod
   #不同的服务器，地址不同
   servlet:
