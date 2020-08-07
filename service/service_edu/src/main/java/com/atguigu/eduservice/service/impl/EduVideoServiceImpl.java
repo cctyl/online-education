@@ -36,8 +36,10 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
         List<EduVideo> eduVideoList = baseMapper.selectList(wrapper);
         List<String> ids = new ArrayList<>();
         for (EduVideo eduVideo : eduVideoList) {
+            if (eduVideo.getVideoSourceId()!=null){
 
-            ids.add(eduVideo.getVideoSourceId());
+                ids.add(eduVideo.getVideoSourceId());
+            }
         }
         vodClient.removeVideoByIdList(ids);
 
