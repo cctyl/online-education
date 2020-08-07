@@ -7,6 +7,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @FeignClient("service-vod")
 @Component
@@ -20,4 +23,13 @@ public interface VodClient {
      */
     @DeleteMapping("/eduvod/video/{id}")
     public R removeVideoById( @PathVariable("id") String id);
+
+
+    /**
+     * 根据id列表删除视频
+     * @param videoIdList
+     * @return
+     */
+    @DeleteMapping("/deleteBatch")
+    public R removeVideoByIdList(@RequestParam("videoIdList") List<String> videoIdList);
 }

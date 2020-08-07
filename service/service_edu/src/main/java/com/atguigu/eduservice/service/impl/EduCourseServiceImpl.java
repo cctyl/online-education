@@ -6,7 +6,10 @@ import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CourseQuery;
 import com.atguigu.eduservice.mapper.EduCourseDescriptionMapper;
 import com.atguigu.eduservice.mapper.EduCourseMapper;
+import com.atguigu.eduservice.mapper.EduVideoMapper;
+import com.atguigu.eduservice.service.EduChapterService;
 import com.atguigu.eduservice.service.EduCourseService;
+import com.atguigu.eduservice.service.EduVideoService;
 import com.atguigu.exceptionhandler.GuliException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,6 +33,13 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     EduCourseDescriptionMapper courseDescriptionMapper;
+
+    @Autowired
+    EduVideoService eduVideoService;
+
+
+    @Autowired
+    EduChapterService eduChapterService;
 
     @Autowired
     EduCourseMapper eduCourseMapper;
@@ -148,7 +158,21 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     }
 
-
+    /**
+     * 根据课程id删除课程以及下面的课程信息
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeCourse(String id) {
+        //删除小节
+        eduVideoService.removeVideosByCourseId(id);
+        //删除章节
+        eduChapterService.removeByCourseId(id);
+        //删除课程
+        eduCourseMapper.deleteById(id);
+        return false;
+    }
 
 
 }

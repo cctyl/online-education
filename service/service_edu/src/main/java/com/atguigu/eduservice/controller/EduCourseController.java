@@ -165,7 +165,7 @@ public class EduCourseController {
     public R deleteCourse(@PathVariable("id") @ApiParam("课程ID") String id) {
 
 
-        boolean b = eduCourseService.removeById(id);
+        boolean b = eduCourseService.removeCourse(id);
         if (b){
             return R.ok();
 

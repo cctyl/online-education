@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/eduvod/video")
@@ -41,6 +43,20 @@ public class VodController {
     public R removeVideoById(@ApiParam("id") @PathVariable("id") String id){
 
         vodService.removeVideoById(id);
+        return R.ok();
+
+    }
+
+    /**
+     * 根据id列表删除视频
+     * @param videoIdList
+     * @return
+     */
+    @DeleteMapping("/deleteBatch")
+    public R removeVideoByIdList(@RequestParam("videoIdList")List<String> videoIdList){
+
+
+        vodService.removeVideoByIdList(videoIdList);
         return R.ok();
 
     }

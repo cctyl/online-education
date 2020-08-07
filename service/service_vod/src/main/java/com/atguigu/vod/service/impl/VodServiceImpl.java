@@ -12,11 +12,13 @@ import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 
 import com.atguigu.vod.utils.InitVodClient;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Service
@@ -71,5 +73,22 @@ public class VodServiceImpl implements VodService {
         }
 
 
+    }
+
+    @Override
+    public void removeVideoByIdList(List<String> videoIdList) {
+        try {
+            DefaultAcsClient defaultAcsClient = InitVodClient.initVodClient(constantProperties.getKeyid(), constantProperties.getKeysecret());
+            DeleteVideoRequest request = new DeleteVideoRequest();
+
+            String join = StringUtils.join(videoIdList.toArray(), ",");
+
+            request.setVideoIds(join);
+            defaultAcsClient.getAcsResponse(request);
+
+        } catch (ClientException e) {
+
+            throw new GuliException(20001,ExceptionUtil.getMessage(e));
+        }
     }
 }
