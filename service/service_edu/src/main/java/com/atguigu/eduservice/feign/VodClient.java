@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient("service-vod")
+@FeignClient(value = "service-vod",fallback = VodClientFallback.class)
 @Component
 public interface VodClient {
 
@@ -30,6 +30,6 @@ public interface VodClient {
      * @param videoIdList
      * @return
      */
-    @DeleteMapping("/deleteBatch")
+    @DeleteMapping("/eduvod/video/deleteBatch")
     public R removeVideoByIdList(@RequestParam("videoIdList") List<String> videoIdList);
 }
