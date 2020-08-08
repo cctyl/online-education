@@ -5,6 +5,7 @@ import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduVideo;
 import com.atguigu.eduservice.feign.VodClient;
 import com.atguigu.eduservice.service.EduVideoService;
+import com.atguigu.exceptionhandler.GuliException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +48,17 @@ public class EduVideoController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation("删除小节")
-    public R deleteVideo(@ApiParam("课程小节信息") @PathVariable("id") String id) {
+    public R deleteVideo(@ApiParam("小节id") @PathVariable("id") String id) {
 
         EduVideo byId = eduVideoService.getById(id);
 
         if (!StringUtils.isEmpty(byId.getVideoSourceId())){
             //删除阿里云中的视频
-            vodClient.removeVideoById(byId.getVideoSourceId());
+            R r = vodClient.removeVideoById(byId.getVideoSourceId());
+            if (r.getCode()==20001){
+
+                throw new GuliException(20001,"删除视频失败，熔断器触发");
+            }
         }
 
         //删除小节信息
@@ -71,6 +76,19 @@ public class EduVideoController {
 
         eduVideoService.updateById(eduVideo);
         return R.ok();
+    }
+
+    /**
+     * 根据id获取小节信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R getVideoInfoById(@ApiParam("小节id") @PathVariable("id") String id){
+
+        EduVideo byId = eduVideoService.getById(id);
+
+        return R.ok().data("item",byId);
     }
 
 }

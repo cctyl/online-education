@@ -55,7 +55,7 @@ public class EduChapterController {
     @DeleteMapping("/{id}")
     @ApiOperation("删除章节信息")
     public R deleteChapter(@PathVariable("id") @ApiParam("章节信息") String id) {
-        eduChapterService.removeById(id);
+        eduChapterService.removeChapterById(id);
         return R.ok();
     }
 
