@@ -69,7 +69,7 @@ public class VodServiceImpl implements VodService {
 
         } catch (ClientException e) {
 
-           throw new GuliException(20001,ExceptionUtil.getMessage(e));
+           throw new GuliException(20001,"视频不存在"+ExceptionUtil.getMessage(e));
         }
 
 
