@@ -26,6 +26,10 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     @Autowired
     VodClient vodClient;
 
+    /**
+     * 根据课程id删除视频
+     * @param id
+     */
     @Override
     public void removeVideosByCourseId(String id) {
 
@@ -41,11 +45,49 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
                 ids.add(eduVideo.getVideoSourceId());
             }
         }
-        vodClient.removeVideoByIdList(ids);
+
+        if(ids.size()>0){
+
+            vodClient.removeVideoByIdList(ids);
+        }
 
         //2.删除 EduVideo表中的数据
         QueryWrapper<EduVideo> wrapper2 = new QueryWrapper<>();
         wrapper.eq("course_id",id);
         baseMapper.delete(wrapper2);
     }
+
+
+    /**
+     * 根据章节id删除视频
+     * @param id
+     */
+    @Override
+    public void removeVideosByChapterId(String id) {
+
+        //1.查询出视频id，调用远程接口删除阿里云视频
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("chapter_id",id);
+        wrapper.select("video_source_id");
+        List<EduVideo> eduVideoList = baseMapper.selectList(wrapper);
+        List<String> ids = new ArrayList<>();
+        for (EduVideo eduVideo : eduVideoList) {
+            if (eduVideo!=null){
+
+                ids.add(eduVideo.getVideoSourceId());
+            }
+        }
+
+        if(ids.size()>0){
+
+            vodClient.removeVideoByIdList(ids);
+        }
+
+        //2.删除 EduVideo表中的数据
+        QueryWrapper<EduVideo> wrapper2 = new QueryWrapper<>();
+        wrapper.eq("chapter_id",id);
+        baseMapper.delete(wrapper2);
+    }
+
+
 }

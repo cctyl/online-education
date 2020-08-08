@@ -7,6 +7,7 @@ import com.atguigu.eduservice.entity.chapter.VideoVo;
 import com.atguigu.eduservice.mapper.EduChapterMapper;
 import com.atguigu.eduservice.mapper.EduVideoMapper;
 import com.atguigu.eduservice.service.EduChapterService;
+import com.atguigu.eduservice.service.EduVideoService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,9 @@ import java.util.List;
 public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, EduChapter> implements EduChapterService {
     @Autowired
     EduVideoMapper eduVideoMapper;
+
+    @Autowired
+    EduVideoService eduVideoService;
 
     /**
      * 查询当前课程的章节信息
@@ -87,6 +91,21 @@ public class EduChapterServiceImpl<T,E> extends ServiceImpl<EduChapterMapper, Ed
         QueryWrapper<EduChapter> wrapper = new QueryWrapper<>();
         wrapper.eq("course_id",id);
         baseMapper.delete(wrapper);
+
+    }
+
+    /**
+     * 删除章节以及章节下面的视频
+     * @param id 章节id
+     */
+    @Override
+    public void removeChapterById(String id) {
+        //1.删除章节下面的视频
+        eduVideoService.removeVideosByChapterId(id);
+
+        //2.删除EduChapter表中的数据
+        this.removeById(id);
+
 
     }
 
