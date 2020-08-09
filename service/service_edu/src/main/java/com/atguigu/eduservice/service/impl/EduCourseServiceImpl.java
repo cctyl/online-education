@@ -164,14 +164,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
      * @return
      */
     @Override
-    public boolean removeCourse(String id) {
+    public void removeCourse(String id) {
         //删除小节
         eduVideoService.removeVideosByCourseId(id);
         //删除章节
         eduChapterService.removeByCourseId(id);
         //删除课程
         eduCourseMapper.deleteById(id);
-        return false;
+
     }
 
 
