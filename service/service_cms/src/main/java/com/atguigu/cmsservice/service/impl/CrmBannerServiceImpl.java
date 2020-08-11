@@ -6,6 +6,8 @@ import com.atguigu.cmsservice.service.CrmBannerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 首页banner表 服务实现类
@@ -17,4 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner> implements CrmBannerService {
 
+    /**
+     * 查询所有banner
+     * @return
+     */
+    @Override
+    public List<CrmBanner> getAllBanner() {
+
+        List<CrmBanner> crmBanners = baseMapper.selectList(null);
+        return crmBanners;
+    }
 }
