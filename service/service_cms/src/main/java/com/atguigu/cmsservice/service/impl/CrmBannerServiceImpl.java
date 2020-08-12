@@ -3,6 +3,7 @@ package com.atguigu.cmsservice.service.impl;
 import com.atguigu.cmsservice.entity.CrmBanner;
 import com.atguigu.cmsservice.mapper.CrmBannerMapper;
 import com.atguigu.cmsservice.service.CrmBannerService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,12 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
     @Override
     public List<CrmBanner> getAllBanner() {
 
-        List<CrmBanner> crmBanners = baseMapper.selectList(null);
+        QueryWrapper<CrmBanner> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id");
+        wrapper.last("limit 5");
+
+
+        List<CrmBanner> crmBanners = baseMapper.selectList(wrapper);
         return crmBanners;
     }
 }
