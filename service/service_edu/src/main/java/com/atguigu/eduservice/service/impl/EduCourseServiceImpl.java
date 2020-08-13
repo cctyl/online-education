@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -174,7 +175,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     }
 
+    /**
+     * 获取热门课程信息
+     * @return
+     */
     @Override
+    @Cacheable(value = "course", key = "'selectIndexList'")
     public List<EduCourse> getHotCourse() {
 
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();

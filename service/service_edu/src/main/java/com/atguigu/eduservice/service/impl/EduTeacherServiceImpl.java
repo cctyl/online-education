@@ -5,6 +5,7 @@ import com.atguigu.eduservice.mapper.EduTeacherMapper;
 import com.atguigu.eduservice.service.EduTeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
 
     @Override
+    @Cacheable(value = "course", key = "'selectIndexList'")
     public List<EduTeacher> getHotTeacher() {
 
         QueryWrapper<EduTeacher> teacherQueryWrapper = new QueryWrapper<>();
