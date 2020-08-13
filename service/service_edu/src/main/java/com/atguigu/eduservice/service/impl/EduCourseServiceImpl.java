@@ -176,7 +176,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Override
     public List<EduCourse> getHotCourse() {
-        return null;
+
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id");
+        wrapper.last("limit 8");
+        List<EduCourse> courseList = this.list(wrapper);
+        return courseList;
     }
 
 
