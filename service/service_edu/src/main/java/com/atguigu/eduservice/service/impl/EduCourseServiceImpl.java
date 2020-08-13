@@ -174,5 +174,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     }
 
+    @Override
+    public List<EduCourse> getHotCourse() {
+        return null;
+    }
+
 
 }

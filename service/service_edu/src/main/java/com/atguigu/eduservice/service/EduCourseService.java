@@ -2,7 +2,6 @@ package com.atguigu.eduservice.service;
 
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
-import com.atguigu.eduservice.entity.vo.CourseQuery;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -30,4 +29,6 @@ public interface EduCourseService extends IService<EduCourse> {
 
 
     void removeCourse(String id);
+
+    List<EduCourse> getHotCourse();
 }

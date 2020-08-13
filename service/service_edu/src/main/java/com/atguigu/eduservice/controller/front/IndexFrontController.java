@@ -32,26 +32,23 @@ public class IndexFrontController {
 
 
     /**
-     *  查询前8条热门课程，查询前4条名师
-      * @return
+     * 查询前8条热门课程，查询前4条名师
+     *
+     * @return
      */
     @GetMapping("/index")
     @ApiOperation("查询前台的热门课程和热门讲师数据")
-    public R getIndexData(){
+    public R getIndexData() {
 
         //1.查询热门课程
-        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("id");
-        wrapper.last("limit 8");
-        List<EduCourse> courseList = eduCourseService.list(wrapper);
+        List<EduCourse> courseList =  eduCourseService.getHotCourse();
+
 
         //2.查询热门讲师
-        QueryWrapper<EduTeacher> teacherQueryWrapper = new QueryWrapper<>();
-        teacherQueryWrapper.orderByDesc("id");
-        teacherQueryWrapper.last("limit 8");
-        List<EduTeacher> teacherList = eduTeacherService.list(teacherQueryWrapper);
+        List<EduTeacher> teacherList  = eduTeacherService.getHotTeacher();
 
-        return R.ok().data("courseList",courseList).data("teacherList",teacherList);
+
+        return R.ok().data("courseList", courseList).data("teacherList", teacherList);
 
     }
 
