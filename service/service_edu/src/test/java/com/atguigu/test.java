@@ -34,7 +34,7 @@ public class test<T,E> {
         String projectPath = System.getProperty("user.dir");
         System.out.println(projectPath);
         //设置输出路径，建议写绝对路径，因为不容易出错
-        gc.setOutputDir("E:\\IDEAProject\\guli_parent\\service\\service_edu"+ "/src/main/java");
+        gc.setOutputDir("E:\\IDEAProject\\guli_parent\\service\\service_cms"+ "/src/main/java");
         gc.setAuthor("tyl");//作者
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖，如果写true，就会把原有文件里的内容覆盖掉
@@ -141,6 +141,17 @@ public class test<T,E> {
     }
 
 
+    @Test
+    public void main6(){
+        int[] ints = returnArr();
+        for (int anInt : ints) {
+
+            System.out.println(anInt);
+        }
+
+
+    }
+
     /**
      * 将List<E> 转换为 List<T>
      * @param oldList
@@ -155,6 +166,15 @@ public class test<T,E> {
         }
 
         return newList;
+    }
+
+
+    public int[] returnArr(){
+
+        int[] arr = new int[10];
+        arr[0] = 5;
+        arr[1]=30;
+        return arr;
     }
 }
 

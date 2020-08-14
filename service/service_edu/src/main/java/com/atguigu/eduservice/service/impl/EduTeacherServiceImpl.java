@@ -22,7 +22,7 @@ import java.util.List;
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
 
     @Override
-    @Cacheable(value = "course", key = "'selectIndexList'")
+    @Cacheable(value = "teacher", key = "'selectIndexList'")
     public List<EduTeacher> getHotTeacher() {
 
         QueryWrapper<EduTeacher> teacherQueryWrapper = new QueryWrapper<>();
