@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@MapperScan("com.atguigu.eduservice.mapper")
+@MapperScan("com.atguigu.educenter.mapper")
 public class EduCenterConfig {
 
 

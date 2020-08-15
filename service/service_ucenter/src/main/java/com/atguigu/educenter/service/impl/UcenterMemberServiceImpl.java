@@ -1,6 +1,9 @@
 package com.atguigu.educenter.service.impl;
 
+
 import com.atguigu.commonutils.JWTUtils;
+
+import com.atguigu.commonutils.MD5;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.mapper.UcenterMemberMapper;
 import com.atguigu.educenter.service.UcenterMemberService;
@@ -33,7 +36,8 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
 
         String mobile = loginmember.getMobile();
-        String password = loginmember.getPassword();
+        String password =MD5.encrypt( loginmember.getPassword());   //先进行md5加密在对比
+
         Boolean isDisabled = loginmember.getIsDisabled();
 
         //手机号和密码都不能为空
@@ -54,6 +58,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         }
 
        //密码是否正确
+
         if ( !ucenterMember.getPassword().equals(password)) {
             throw new GuliException(20001,"登陆失败");
         }

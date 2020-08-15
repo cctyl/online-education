@@ -1,10 +1,10 @@
 # 服务端口
 server:
-  port: 8004
+  port: 8006
   # 服务名
 spring:
   application:
-    name: service-cms
+    name: service-ucenter
   datasource:
     username: root
     password: root
