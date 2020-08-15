@@ -50,7 +50,7 @@ public class MsmController {
 
         if (result){
             //发送成功，存入redis
-            redisUtils.set(phone,code);
+            redisUtils.set(phone,code,5l);
             return R.ok();
         }else
             return R.error();
