@@ -60,7 +60,6 @@ public class UcenterMember implements Serializable {
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableLogic
-    @TableField(fill = FieldFill.INSERT)
     private Boolean isDeleted;
 
     @TableField(fill = FieldFill.INSERT)

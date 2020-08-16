@@ -5,6 +5,7 @@ import com.atguigu.commonutils.JWTUtils;
 
 import com.atguigu.commonutils.MD5;
 import com.atguigu.educenter.entity.UcenterMember;
+import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.mapper.UcenterMemberMapper;
 import com.atguigu.educenter.service.UcenterMemberService;
 import com.atguigu.exceptionhandler.GuliException;
@@ -76,5 +77,46 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
 
         return jwtToken;
+    }
+
+
+    /**
+     * 用户注册
+     * @param registerVo
+     */
+    @Override
+    public void register(RegisterVo registerVo) {
+
+        String code = registerVo.getCode();
+        String mobile = registerVo.getMobile();
+        String nickname = registerVo.getNickname();
+        String password = registerVo.getPassword();
+
+        //非空判断
+        if (StringUtils.isEmpty(code)||StringUtils.isEmpty(mobile)||StringUtils.isEmpty(nickname)||StringUtils.isEmpty(password)){
+
+            throw new GuliException(20001,"注册失败");
+        }
+
+        //判断手机号是否重复
+        QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
+
+        wrapper.eq("mobile",mobile);
+        UcenterMember ucenterMember = baseMapper.selectOne(wrapper);
+        if (ucenterMember!=null){
+
+            throw new GuliException(20001,"手机号已存在！");
+        }
+
+        //存入数据库
+
+        UcenterMember member = new UcenterMember();
+        member.setNickname(nickname);
+        member.setMobile(mobile);
+        member.setPassword(MD5.encrypt(password));
+        member.setAvatar("http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoj0hHXhgJNOTSOFsS4uZs8x1ConecaVOB8eIl115xmJZcT4oCicvia7wMEufibKtTLqiaJeanU2Lpg3w/132");
+
+        baseMapper.insert(member);
+
     }
 }

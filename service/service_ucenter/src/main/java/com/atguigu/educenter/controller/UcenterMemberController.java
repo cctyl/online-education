@@ -3,6 +3,7 @@ package com.atguigu.educenter.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.educenter.entity.UcenterMember;
+import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,20 @@ public class UcenterMemberController {
     }
 
 
+    /**
+     * 用户注册方法
+     * @param registerVo
+     * @return
+     */
+    @ApiOperation("用户注册")
+    @PostMapping("/register")
+    public R register(@RequestBody RegisterVo registerVo){
 
 
+        memberService.register(registerVo);
+        return R.ok();
+
+    }
 
 }
 
