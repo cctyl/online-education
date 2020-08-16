@@ -4,6 +4,7 @@ package com.atguigu.educenter.service.impl;
 import com.atguigu.commonutils.JWTUtils;
 
 import com.atguigu.commonutils.MD5;
+import com.atguigu.commonutils.RedisUtils;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.mapper.UcenterMemberMapper;
@@ -11,6 +12,7 @@ import com.atguigu.educenter.service.UcenterMemberService;
 import com.atguigu.exceptionhandler.GuliException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,6 +29,9 @@ import javax.management.Query;
 @Service
 public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, UcenterMember> implements UcenterMemberService {
 
+    @Autowired
+    private  RedisUtils redisUtils;
+
     /**
      * 用户登陆
      * @param loginmember
@@ -39,7 +44,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         String mobile = loginmember.getMobile();
         String password =MD5.encrypt( loginmember.getPassword());   //先进行md5加密在对比
 
-        Boolean isDisabled = loginmember.getIsDisabled();
+        Integer isDisabled = loginmember.getIsDisabled();
 
         //手机号和密码都不能为空
         if (StringUtils.isEmpty(mobile)|| StringUtils.isEmpty(password)){
@@ -66,7 +71,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
 
         //判断用户是否被禁用
-        if (ucenterMember.getIsDisabled()){
+        if (ucenterMember.getIsDisabled()==1){
             throw new GuliException(20001,"登陆失败");
         }
 
@@ -96,6 +101,12 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         if (StringUtils.isEmpty(code)||StringUtils.isEmpty(mobile)||StringUtils.isEmpty(nickname)||StringUtils.isEmpty(password)){
 
             throw new GuliException(20001,"注册失败");
+        }
+
+        String codeCheck = redisUtils.get(mobile);
+        if (!codeCheck.equals(code)){
+
+            throw new GuliException(20001,"验证码错误");
         }
 
         //判断手机号是否重复

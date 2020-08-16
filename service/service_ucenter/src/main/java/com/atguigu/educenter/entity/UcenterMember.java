@@ -56,11 +56,12 @@ public class UcenterMember implements Serializable {
     private String sign;
 
     @ApiModelProperty(value = "是否禁用 1（true）已禁用，  0（false）未禁用")
-    private Boolean isDisabled;
+    private Integer isDisabled;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableLogic
-    private Boolean isDeleted;
+    @TableField(fill = FieldFill.INSERT)
+    private Integer isDeleted;
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
