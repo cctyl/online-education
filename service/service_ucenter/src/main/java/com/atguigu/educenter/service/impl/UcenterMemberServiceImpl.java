@@ -113,8 +113,9 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
 
         wrapper.eq("mobile",mobile);
-        UcenterMember ucenterMember = baseMapper.selectOne(wrapper);
-        if (ucenterMember!=null){
+        Integer integer = baseMapper.selectCount(wrapper);
+        //只要记录条数大于等于1，就认为这个号码重复了
+        if (integer>0){
 
             throw new GuliException(20001,"手机号已存在！");
         }
