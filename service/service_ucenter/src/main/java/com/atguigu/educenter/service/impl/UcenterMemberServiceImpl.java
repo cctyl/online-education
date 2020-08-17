@@ -104,6 +104,9 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         }
 
         String codeCheck = redisUtils.get(mobile);
+        if (codeCheck==null){
+            throw new GuliException(20001,"验证码错误");
+        }
         if (!codeCheck.equals(code)){
 
             throw new GuliException(20001,"验证码错误");
