@@ -1,6 +1,7 @@
 package com.atguigu.educenter.controller;
 
 
+import com.atguigu.commonutils.JWTUtils;
 import com.atguigu.commonutils.R;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.vo.RegisterVo;
@@ -8,6 +9,8 @@ import com.atguigu.educenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -57,6 +60,26 @@ public class UcenterMemberController {
 
         memberService.register(registerVo);
         return R.ok();
+
+    }
+
+
+    /**
+     * 根据token获取用户信息
+     * @param request
+     * @return
+     */
+    @GetMapping("/info")
+    public R getMemberInfo(HttpServletRequest request){
+
+        String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(request);
+
+        UcenterMember byId = memberService.getById(memberIdByJwtToken);
+        if (byId==null){
+            return R.error().message("未登陆！");
+        }
+        return R.ok().data("userInfo",byId);
+
 
     }
 

@@ -87,4 +87,19 @@ public class JWTUtils {
         Claims claims = claimsJws.getBody();//得到字符串中的主体部分
         return (String)claims.get("id");
     }
+
+
+
+    /**
+     * 根据token获取会员昵称
+     * @param request
+     * @return
+     */
+    public static String getMemberNicknameByJwtToken(HttpServletRequest request) {
+        String jwtToken = request.getHeader("token");   //要求token是放在请求头中的，注意，是放在请求头而不是cookie中
+        if(StringUtils.isEmpty(jwtToken)) return "";
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
+        Claims claims = claimsJws.getBody();//得到字符串中的主体部分
+        return (String)claims.get("nickname");
+    }
 }
