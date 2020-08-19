@@ -6,6 +6,7 @@ import com.atguigu.commonutils.R;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.service.UcenterMemberService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +75,13 @@ public class UcenterMemberController {
 
         String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(request);
 
-        UcenterMember byId = memberService.getById(memberIdByJwtToken);
+        QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
+        //根据id查询
+        wrapper.eq("id",memberIdByJwtToken);
+        //只查询指定的列
+        wrapper.select("id","openid","mobile","nickname","sex","age","avatar","sign");
+
+        UcenterMember byId = memberService.getOne(wrapper);
         if (byId==null){
             return R.error().message("未登陆！");
         }
