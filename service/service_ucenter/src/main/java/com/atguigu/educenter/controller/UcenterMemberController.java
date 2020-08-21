@@ -9,6 +9,7 @@ import com.atguigu.educenter.service.UcenterMemberService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +75,9 @@ public class UcenterMemberController {
     public R getMemberInfo(HttpServletRequest request){
 
         String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(request);
+        if (StringUtils.isEmpty(memberIdByJwtToken)){
+            return R.error().message("未登陆！");
+        }
 
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
         //根据id查询

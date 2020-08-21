@@ -42,6 +42,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
 
         String mobile = loginmember.getMobile();
+
         String password =MD5.encrypt( loginmember.getPassword());   //先进行md5加密在对比
 
         Integer isDisabled = loginmember.getIsDisabled();

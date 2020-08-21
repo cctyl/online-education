@@ -52,6 +52,7 @@ public class UcenterMember implements Serializable {
     @ApiModelProperty(value = "用户头像")
     private String avatar;
 
+
     @ApiModelProperty(value = "用户签名")
     private String sign;
 
