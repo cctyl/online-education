@@ -1,6 +1,7 @@
 package com.atguigu.educenter.controller;
 
 import com.atguigu.commonutils.ExceptionUtil;
+import com.atguigu.commonutils.JWTUtils;
 import com.atguigu.commonutils.RedisUtils;
 import com.atguigu.educenter.config.WxConfigProperties;
 import com.atguigu.educenter.entity.UcenterMember;
@@ -135,7 +136,7 @@ public class WxApiController {
                 e.printStackTrace();
             }
 
-
+            //存入数据库
             member = new UcenterMember();
             member.setNickname(wxUserInfo.getNickname());
             member.setOpenid(wxAccessToken.getOpenid());
@@ -145,7 +146,11 @@ public class WxApiController {
 
         }
 
+        //生成token
+        String jwtToken = JWTUtils.getJwtToken(member.getId(), member.getNickname());
 
-        return "redirect:http://localhost:3000";
+
+
+        return "redirect:http://localhost:3000?token="+jwtToken;
     }
 }
