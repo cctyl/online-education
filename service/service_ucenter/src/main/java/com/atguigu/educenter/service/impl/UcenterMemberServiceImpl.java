@@ -135,4 +135,20 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         baseMapper.insert(member);
 
     }
+
+    /**
+     * 根据openid查询用户是否曾经用微信登陆
+     * @param openid
+     */
+    @Override
+    public UcenterMember getByOpenId(String openid) {
+
+        QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
+
+        wrapper.eq("openid",openid);
+
+        UcenterMember member = baseMapper.selectOne(wrapper);
+
+        return member;
+    }
 }

@@ -1,8 +1,12 @@
 package com.atguigu.educenter.controller;
 
+import com.atguigu.commonutils.ExceptionUtil;
 import com.atguigu.commonutils.RedisUtils;
 import com.atguigu.educenter.config.WxConfigProperties;
+import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.wx.WxAccessToken;
+import com.atguigu.educenter.entity.wx.WxUserInfo;
+import com.atguigu.educenter.service.UcenterMemberService;
 import com.atguigu.educenter.utils.HttpClientUtils;
 import com.atguigu.exceptionhandler.GuliException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
@@ -30,11 +35,11 @@ public class WxApiController {
 
 
     @Autowired
-    RestTemplate restTemplate;
-
+    ObjectMapper objectMapper;
 
     @Autowired
-    RedisUtils redisUtils;
+    UcenterMemberService memberService;
+
 
     /**
      * 生成一个微信二维码，用于扫码登陆
@@ -61,8 +66,6 @@ public class WxApiController {
             throw new GuliException(20001, e.getMessage());
         }
 
-        //存储一个state值，用来验证等会的回调连接
-        redisUtils.set("wxState","guli");
 
         String qrCodeUrl = String.format(baseUrl,
                 wxConfigProperties.getAppId(),
@@ -85,6 +88,11 @@ public class WxApiController {
     public String wxCallback(@RequestParam("code") String code, @RequestParam("state") String state) {
 
 
+        //验证state
+        if (!state.equals("guli")) {
+            throw new GuliException(20001, "非法访问！");
+        }
+        log.debug(code + "----" + state);
         //向认证服务器发送请求换取access_token
         String baseAccessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token" +
                 "?appid=%s" +
@@ -98,9 +106,44 @@ public class WxApiController {
                 wxConfigProperties.getAppSecret(),
                 code);
 
-        //得到 accesstoken  和 openid
-        WxAccessToken forObject = restTemplate.getForObject(accessTokenUrl, WxAccessToken.class);
+        String accessToken = "";
+        WxAccessToken wxAccessToken = null;
+        try {
+            accessToken = HttpClientUtils.get(accessTokenUrl);
+            log.info(accessToken);
+            wxAccessToken = objectMapper.readValue(accessToken, WxAccessToken.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+
+        //查询这个用户是否曾经用 微信登陆过
+        UcenterMember member = memberService.getByOpenId(wxAccessToken.getOpenid());
+        if (member == null) {
+            //访问微信的资源服务器，获取用户信息
+            String baseUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo" +
+                    "?access_token=%s" +
+                    "&openid=%s";
+            String userInfoUrl = String.format(baseUserInfoUrl, wxAccessToken.getAccess_token(), wxAccessToken.getOpenid());
+            WxUserInfo wxUserInfo =null;
+            try {
+                String resultUserInfo = HttpClientUtils.get(userInfoUrl);
+                wxUserInfo= objectMapper.readValue(resultUserInfo, WxUserInfo.class);
+
+                log.info(resultUserInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            member = new UcenterMember();
+            member.setNickname(wxUserInfo.getNickname());
+            member.setOpenid(wxAccessToken.getOpenid());
+            member.setAvatar(wxUserInfo.getHeadimgurl());
+            member.setSex(wxUserInfo.getSex());
+            memberService.save(member);
+
+        }
 
 
         return "redirect:http://localhost:3000";
