@@ -4,6 +4,7 @@ import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.EduCourseDescription;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CourseQuery;
+import com.atguigu.eduservice.entity.vo.front.CourseFrontQuery;
 import com.atguigu.eduservice.mapper.EduCourseDescriptionMapper;
 import com.atguigu.eduservice.mapper.EduCourseMapper;
 import com.atguigu.eduservice.mapper.EduVideoMapper;
@@ -18,8 +19,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -188,6 +192,95 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         wrapper.last("limit 8");
         List<EduCourse> courseList = this.list(wrapper);
         return courseList;
+    }
+
+
+    /**
+     * 分页条件查询课程列表
+     *
+     * @return
+     */
+    @Override
+    public Map<String, Object> getCourseInfoList(Page<EduCourse> coursePage, CourseFrontQuery courseFrontQuery) {
+
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+
+        //一级分类
+        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectParentId())){
+
+            wrapper.eq("subject_parent_id",courseFrontQuery.getSubjectParentId());
+        }
+
+        //二级分类
+        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectId())){
+
+            wrapper.eq("subject_id",courseFrontQuery.getSubjectId());
+        }
+
+        //关注度排序
+        if (!StringUtils.isEmpty(courseFrontQuery.getBuyCountSort())) {
+
+            switch (courseFrontQuery.getBuyCountSort()){
+                case "1":
+                    wrapper.orderByAsc("buy_count");
+                    break;
+
+                case "2":
+                    wrapper.orderByDesc("buy_count");
+
+            }
+        }
+
+        //最新的课程
+        if (!StringUtils.isEmpty(courseFrontQuery.getGmtCreateSort())) {
+
+            switch (courseFrontQuery.getGmtCreateSort()){
+                case "1":
+                    wrapper.orderByAsc("gmt_create");
+                    break;
+
+                case "2":
+                    wrapper.orderByDesc("gmt_create");
+
+            }
+        }
+
+
+        //价格排序
+        if (!StringUtils.isEmpty(courseFrontQuery.getPriceSort())) {
+
+            switch (courseFrontQuery.getPriceSort()){
+                case "1":
+                    wrapper.orderByAsc("price");
+                    break;
+
+                case "2":
+                    wrapper.orderByDesc("price");
+
+            }
+        }
+
+
+        baseMapper.selectPage(coursePage,wrapper);
+
+        List<EduCourse> records = coursePage.getRecords();
+        long current = coursePage.getCurrent();
+        long pages = coursePage.getPages();
+        long size = coursePage.getSize();
+        long total = coursePage.getTotal();
+        boolean hasNext = coursePage.hasNext();
+        boolean hasPrevious = coursePage.hasPrevious();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+
+        return map;
     }
 
 
