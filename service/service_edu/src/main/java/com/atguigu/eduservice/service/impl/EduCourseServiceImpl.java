@@ -5,6 +5,7 @@ import com.atguigu.eduservice.entity.EduCourseDescription;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CourseQuery;
 import com.atguigu.eduservice.entity.vo.front.CourseFrontQuery;
+import com.atguigu.eduservice.entity.vo.front.CourseWebVo;
 import com.atguigu.eduservice.mapper.EduCourseDescriptionMapper;
 import com.atguigu.eduservice.mapper.EduCourseMapper;
 import com.atguigu.eduservice.mapper.EduVideoMapper;
@@ -281,6 +282,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         map.put("hasPrevious", hasPrevious);
 
         return map;
+    }
+
+
+    /**
+     * 查询课程信息以及附带的讲师数据，还有分类数据
+     * @param courseId
+     * @return
+     */
+    @Override
+    public CourseWebVo getCourseDetailById(String courseId) {
+
+       return baseMapper.getCourseDetail(courseId);
+
     }
 
 

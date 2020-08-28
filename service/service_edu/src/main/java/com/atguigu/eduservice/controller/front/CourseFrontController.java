@@ -2,7 +2,10 @@ package com.atguigu.eduservice.controller.front;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduCourse;
+import com.atguigu.eduservice.entity.chapter.ChapterVo;
 import com.atguigu.eduservice.entity.vo.front.CourseFrontQuery;
+import com.atguigu.eduservice.entity.vo.front.CourseWebVo;
+import com.atguigu.eduservice.service.EduChapterService;
 import com.atguigu.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,6 +23,9 @@ public class CourseFrontController {
 
     @Autowired
     private EduCourseService eduCourseService;
+
+    @Autowired
+    private EduChapterService eduChapterService;
 
     /**
      * 分页条件查询课程列表
@@ -44,4 +51,25 @@ public class CourseFrontController {
 
         return R.ok().data(map);
     }
+
+
+    /**
+     * 查询课程详情信息
+     * @param courseId
+     * @return 课程信息以及课程下面的章节和小节
+     */
+    @GetMapping("/detail/{courseId}")
+    @ApiOperation("查询课程详情信息")
+    public R getCourseDetail(@ApiParam("课程id") @PathVariable("courseId") String courseId){
+        //查询课程主体信息
+        CourseWebVo course =    eduCourseService.getCourseDetailById(courseId);
+
+        //查询课程下面的章节和小节信息
+        List<ChapterVo> courseChapterInfo = eduChapterService.getCourseChapterInfo(courseId);
+
+
+        return R.ok().data("course",course).data("chapterVoList",courseChapterInfo);
+    }
+
+
 }
