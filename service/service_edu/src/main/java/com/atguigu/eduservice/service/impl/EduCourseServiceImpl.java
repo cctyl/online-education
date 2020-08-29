@@ -298,6 +298,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public CourseWebVo getCourseDetailById(String courseId) {
 
+        this.updateViewCount(courseId);
         return baseMapper.getCourseDetail(courseId);
 
     }
