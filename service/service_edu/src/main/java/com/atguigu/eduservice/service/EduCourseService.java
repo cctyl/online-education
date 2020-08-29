@@ -39,4 +39,6 @@ public interface EduCourseService extends IService<EduCourse> {
     Map<String, Object> getCourseInfoList(Page<EduCourse> coursePage, CourseFrontQuery courseFrontQuery);
 
     CourseWebVo getCourseDetailById(String courseId);
+
+    void updateViewCount(String courseId);
 }

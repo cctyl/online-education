@@ -135,6 +135,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 获取即将发布的课程的信息
+     *
      * @param id
      * @return
      */
@@ -142,14 +143,15 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public CourseInfoVo getPublishCourseInfoById(String id) {
 
         CourseInfoVo courseInfoById = eduCourseMapper.getCourseInfoById(id);
-        if (courseInfoById==null){
-            throw new GuliException(20001,"查询的课程不存在");
+        if (courseInfoById == null) {
+            throw new GuliException(20001, "查询的课程不存在");
         }
         return courseInfoById;
     }
 
     /**
      * 发布课程，就是将status字段改为Normal
+     *
      * @param id
      */
     @Override
@@ -158,14 +160,15 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourse.setId(id);
         eduCourse.setStatus("Normal");
         int i = baseMapper.updateById(eduCourse);
-        if (i<=0){
-            throw new GuliException(20001,"发布失败，没有这个课程");
+        if (i <= 0) {
+            throw new GuliException(20001, "发布失败，没有这个课程");
         }
 
     }
 
     /**
      * 根据课程id删除课程以及下面的课程信息
+     *
      * @param id
      * @return
      */
@@ -182,6 +185,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 获取热门课程信息
+     *
      * @return
      */
     @Override
@@ -207,21 +211,21 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
 
         //一级分类
-        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectParentId())){
+        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectParentId())) {
 
-            wrapper.eq("subject_parent_id",courseFrontQuery.getSubjectParentId());
+            wrapper.eq("subject_parent_id", courseFrontQuery.getSubjectParentId());
         }
 
         //二级分类
-        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectId())){
+        if (!StringUtils.isEmpty(courseFrontQuery.getSubjectId())) {
 
-            wrapper.eq("subject_id",courseFrontQuery.getSubjectId());
+            wrapper.eq("subject_id", courseFrontQuery.getSubjectId());
         }
 
         //关注度排序
         if (!StringUtils.isEmpty(courseFrontQuery.getBuyCountSort())) {
 
-            switch (courseFrontQuery.getBuyCountSort()){
+            switch (courseFrontQuery.getBuyCountSort()) {
                 case "1":
                     wrapper.orderByAsc("buy_count");
                     break;
@@ -235,7 +239,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //最新的课程
         if (!StringUtils.isEmpty(courseFrontQuery.getGmtCreateSort())) {
 
-            switch (courseFrontQuery.getGmtCreateSort()){
+            switch (courseFrontQuery.getGmtCreateSort()) {
                 case "1":
                     wrapper.orderByAsc("gmt_create");
                     break;
@@ -250,7 +254,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         //价格排序
         if (!StringUtils.isEmpty(courseFrontQuery.getPriceSort())) {
 
-            switch (courseFrontQuery.getPriceSort()){
+            switch (courseFrontQuery.getPriceSort()) {
                 case "1":
                     wrapper.orderByAsc("price");
                     break;
@@ -262,7 +266,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
 
 
-        baseMapper.selectPage(coursePage,wrapper);
+        baseMapper.selectPage(coursePage, wrapper);
 
         List<EduCourse> records = coursePage.getRecords();
         long current = coursePage.getCurrent();
@@ -287,14 +291,23 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 查询课程信息以及附带的讲师数据，还有分类数据
+     *
      * @param courseId
      * @return
      */
     @Override
     public CourseWebVo getCourseDetailById(String courseId) {
 
-       return baseMapper.getCourseDetail(courseId);
+        return baseMapper.getCourseDetail(courseId);
 
+    }
+
+    @Override
+    public void updateViewCount(String courseId) {
+
+        EduCourse eduCourse = baseMapper.selectById(courseId);
+        eduCourse.setViewCount(eduCourse.getViewCount() + 1);
+        baseMapper.updateById(eduCourse);
     }
 
 
