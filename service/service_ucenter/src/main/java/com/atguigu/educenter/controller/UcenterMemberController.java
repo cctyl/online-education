@@ -94,5 +94,19 @@ public class UcenterMemberController {
 
     }
 
+
+    /**
+     * 根据用户id获取用户信息
+     * @param id
+     * @return
+     */
+    @PostMapping("/info/{id}")
+    @ApiOperation("根据用户id获取用户信息")
+    public UcenterMember getUserInfoById(@PathVariable("id") String id){
+        UcenterMember byId = memberService.getById(id);
+
+        return byId;
+    }
+
 }
 
