@@ -1,12 +1,14 @@
 package com.atguigu.eduservice.feign;
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.entity.vo.UcenterMember;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -32,4 +34,8 @@ public interface VodClient {
      */
     @DeleteMapping("/eduvod/video/deleteBatch")
     public R removeVideoByIdList(@RequestParam("videoIdList") List<String> videoIdList);
+
+
+
+
 }

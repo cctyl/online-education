@@ -34,7 +34,7 @@ public class test<T,E> {
         String projectPath = System.getProperty("user.dir");
         System.out.println(projectPath);
         //设置输出路径，建议写绝对路径，因为不容易出错
-        gc.setOutputDir("E:\\IDEAProject\\guli_parent\\service\\service_cms"+ "/src/main/java");
+        gc.setOutputDir("E:\\IDEAProject\\guli_parent\\service\\service_edu"+ "/src/main/java");
         gc.setAuthor("tyl");//作者
         gc.setOpen(false); //生成后是否打开资源管理器
         gc.setFileOverride(false); //重新生成时文件是否覆盖，如果写true，就会把原有文件里的内容覆盖掉
@@ -72,7 +72,7 @@ public class test<T,E> {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("edu_course","edu_course_description","edu_chapter","edu_video"); //表的名称，多张表用逗号隔开
+        strategy.setInclude("edu_comment"); //表的名称，多张表用逗号隔开
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀
