@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(value = "service-ucenter",fallback = VodClientFallback.class)
+@FeignClient(value = "service-ucenter",fallback = UcenterClientFallback.class)
 @Component
 public interface UcenterClient {
 

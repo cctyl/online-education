@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class UcenterClientFallback implements UcenterClient {
     @Override
     public UcenterMember getUserInfoById(String id) {
-       throw new GuliException(20001,"获取用户信息失败");
+
+        return null;
     }
 }

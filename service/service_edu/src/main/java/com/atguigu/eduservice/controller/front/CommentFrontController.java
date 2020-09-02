@@ -78,6 +78,10 @@ public class CommentFrontController {
         comment.setMemberId(memberIdByJwtToken);
         UcenterMember user = ucenterClient.getUserInfoById(memberIdByJwtToken);
 
+        if (user==null){
+
+            return R.error().message("请求超时，请稍后再试");
+        }
 
         comment.setAvatar(user.getAvatar());
         comment.setNickname(user.getNickname());
