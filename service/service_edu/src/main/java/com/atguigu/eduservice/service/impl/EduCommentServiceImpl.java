@@ -30,10 +30,11 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
      * @return
      */
     @Override
-    public Map<String, Object> getCommentList(Page<EduComment> eduCommentPage) {
+    public Map<String, Object> getCommentList(Page<EduComment> eduCommentPage,String courseId) {
 
         QueryWrapper<EduComment> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("gmt_create");
+        wrapper.eq("course_id",courseId);
 
 
         baseMapper.selectPage(eduCommentPage,wrapper);

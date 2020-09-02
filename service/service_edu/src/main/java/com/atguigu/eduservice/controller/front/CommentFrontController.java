@@ -36,6 +36,7 @@ public class CommentFrontController {
 
     @Autowired
     UcenterClient ucenterClient;
+
     /**
      * 分页查询评论
      *
@@ -43,34 +44,39 @@ public class CommentFrontController {
      * @param limit 每页记录数
      * @return
      */
-    @PostMapping("/{page}/{limit}")
+    @PostMapping("/{page}/{limit}/{courseId}")
     @ApiOperation("分页查询评论")
     public R getCommentList(@ApiParam(name = "page", value = "当前页码", required = true)
                             @PathVariable("page") Integer page,
 
                             @ApiParam(name = "limit", value = "每页记录数", required = true)
-                            @PathVariable("limit") Long limit) {
+                            @PathVariable("limit") Long limit,
 
-        Page<EduComment> eduCommentPage = new Page<>(page,limit);
+                            @ApiParam(name = "courseId", value = "课程id", required = true)
+                            @PathVariable("courseId") String courseId
 
-      Map<String,Object> map =  eduCommentService.getCommentList(eduCommentPage);
+    ) {
+        Page<EduComment> eduCommentPage = new Page<>(page, limit);
 
-      return R.ok().data(map);
+        Map<String, Object> map = eduCommentService.getCommentList(eduCommentPage,courseId);
+
+        return R.ok().data(map);
     }
 
 
     /**
      * 添加评论
-     * @param comment 评论对象
+     *
+     * @param comment            评论对象
      * @param httpServletRequest
      * @return
      */
     @PostMapping("/add")
     @ApiOperation("添加评论")
     public R addComment(@RequestBody @ApiParam("评论对象") EduComment comment,
-                        HttpServletRequest httpServletRequest){
+                        HttpServletRequest httpServletRequest) {
         String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
-        if (StringUtils.isEmpty(memberIdByJwtToken)){
+        if (StringUtils.isEmpty(memberIdByJwtToken)) {
 
             return R.error().message("未登陆，请登陆！");
         }
@@ -78,7 +84,7 @@ public class CommentFrontController {
         comment.setMemberId(memberIdByJwtToken);
         UcenterMember user = ucenterClient.getUserInfoById(memberIdByJwtToken);
 
-        if (user==null){
+        if (user == null) {
 
             return R.error().message("请求超时，请稍后再试");
         }

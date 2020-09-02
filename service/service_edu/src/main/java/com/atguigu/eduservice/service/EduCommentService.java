@@ -16,5 +16,5 @@ import java.util.Map;
  */
 public interface EduCommentService extends IService<EduComment> {
 
-    Map<String, Object> getCommentList(Page<EduComment> eduCommentPage);
+    Map<String, Object> getCommentList(Page<EduComment> eduCommentPage,String courseId);
 }
