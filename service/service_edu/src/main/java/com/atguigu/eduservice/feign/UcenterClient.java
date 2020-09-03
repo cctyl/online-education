@@ -16,6 +16,6 @@ public interface UcenterClient {
      * @param id
      * @return
      */
-    @PostMapping("/info/{id}")
+    @PostMapping("/educenter/member/info/{id}")
     public UcenterMember getUserInfoById(@PathVariable("id") String id);
 }
