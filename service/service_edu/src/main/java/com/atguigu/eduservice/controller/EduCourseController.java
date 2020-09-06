@@ -73,6 +73,20 @@ public class EduCourseController {
     }
 
 
+    /**
+     * 供远程调用的接口
+     * @param id
+     * @return
+     */
+    @GetMapping("/order/{id}")
+    @ApiOperation("获取课程信息")
+    public CourseInfoVo getCourseInfoOrder(@PathVariable("id") @ApiParam("课程ID") String id) {
+
+        CourseInfoVo courseInfoVo = eduCourseService.getCourseInfoById(id);
+        return courseInfoVo;
+    }
+
+
     @GetMapping("/publish/{id}")
     @ApiOperation("获取课程信息")
     public R getPublishCourseInfo(@PathVariable("id") @ApiParam("课程ID") String id) {
