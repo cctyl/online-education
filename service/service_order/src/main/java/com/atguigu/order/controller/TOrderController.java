@@ -6,11 +6,7 @@ import com.atguigu.commonutils.R;
 import com.atguigu.order.service.TOrderService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,6 +38,20 @@ public class TOrderController {
         String userId = JWTUtils.getMemberIdByJwtToken(request);
         String orderId = orderService.createOrder(courseId, userId);
         return R.ok().data("orderId",orderId);
+    }
+
+
+    /**
+     * 根据id查询订单信息
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/{orderId}")
+    @ApiOperation("根据id查询订单信息")
+    public R getOrderInfo(@PathVariable("orderId") String  orderId){
+
+
+
     }
 
 }
