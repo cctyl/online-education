@@ -8,6 +8,7 @@ import com.atguigu.order.service.TOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,10 @@ public class TOrderController {
     @ApiOperation("生成订单")
     public R createOrder(@PathVariable("courseId") String courseId, HttpServletRequest request) {
         String userId = JWTUtils.getMemberIdByJwtToken(request);
+        if (StringUtils.isEmpty(userId)){
+
+            return R.error().message("未登陆，请登陆");
+        }
         String orderId = orderService.createOrder(courseId, userId);
         return R.ok().data("orderId",orderId);
     }
@@ -57,6 +62,10 @@ public class TOrderController {
         wrapper.eq("order_no",orderId);
         TOrder order = orderService.getOne(wrapper);
 
+        if (order==null){
+
+            return R.error().message("无此订单");
+        }
         return R.ok().data("item",order);
 
 
