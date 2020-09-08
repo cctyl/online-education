@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-09-04
  */
 @RestController
-@RequestMapping("/order/t-pay-log")
+@RequestMapping("/orderservice/pay")
 public class TPayLogController {
 
 }
