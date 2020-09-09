@@ -3,6 +3,7 @@ package com.atguigu.order.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.order.service.TOrderService;
+import com.atguigu.order.service.TPayLogService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class TPayController {
 
 
     @Autowired
-    private TOrderService orderService;
+    private TPayLogService payService;
 
     /**
      * 获取微信支付二维码
@@ -35,7 +36,7 @@ public class TPayController {
     @ApiOperation("获取微信支付二维码")
     public R getWxQRCode(@PathVariable("orderNo") String orderNo){
 
-       Map<String,Object> map =  orderService.createQrCode(orderNo);
+       Map<String,Object> map =  payService.createQrCode(orderNo);
        return R.ok().data(map);
     }
 
