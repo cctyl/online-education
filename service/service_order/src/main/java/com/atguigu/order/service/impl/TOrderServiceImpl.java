@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  * 订单 服务实现类
@@ -65,5 +67,15 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
         return order.getOrderNo();
 
+    }
+
+    /**
+     * 生成微信支付二维码
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public Map<String, Object> createQrCode(String orderNo) {
+        return null;
     }
 }

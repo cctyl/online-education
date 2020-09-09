@@ -3,6 +3,8 @@ package com.atguigu.order.service;
 import com.atguigu.order.entity.TOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  * 订单 服务类
@@ -14,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TOrderService extends IService<TOrder> {
 
     String createOrder(String courseId, String userId);
+
+    Map<String, Object> createQrCode(String orderNo);
 }
