@@ -41,5 +41,32 @@ public class TPayController {
     }
 
 
+    /**
+     * 查询订单支付状态
+     * @param orderNo
+     * @return
+     */
+    @GetMapping("/status/{orderNo}")
+    @ApiOperation("获取支付状态")
+    public R getOrderStatus(@PathVariable("orderNo") String orderNo){
+        //向微信服务器查询订单状态
+        Map<String,String> map = payService.queryPayStatus(orderNo);
+
+        if (map==null){
+            return R.error().message("支付出错");
+        }
+
+        //解析返回的数据，如果支付成功则返回提示
+        if (map.get("trade_state").equals("SUCCESS")){
+            payService.updateOrdersStatus(map);
+            return R.ok().message("支付成功");
+        }
+
+        //到这里说明支付暂喂成功，返回等待的提示
+        return R.ok().message("支付中");
+    }
+
+
+
 }
 
