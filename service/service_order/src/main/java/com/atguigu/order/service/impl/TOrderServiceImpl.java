@@ -32,6 +32,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     @Autowired
     UcenterClient ucenterClient;
 
+
+
+
     /**
      * 生成一个课程id
      * @param courseId
@@ -69,13 +72,5 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
 
     }
 
-    /**
-     * 生成微信支付二维码
-     * @param orderNo
-     * @return
-     */
-    @Override
-    public Map<String, Object> createQrCode(String orderNo) {
-        return null;
-    }
+
 }

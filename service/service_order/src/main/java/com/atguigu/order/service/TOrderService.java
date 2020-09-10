@@ -17,5 +17,5 @@ public interface TOrderService extends IService<TOrder> {
 
     String createOrder(String courseId, String userId);
 
-    Map<String, Object> createQrCode(String orderNo);
+
 }
