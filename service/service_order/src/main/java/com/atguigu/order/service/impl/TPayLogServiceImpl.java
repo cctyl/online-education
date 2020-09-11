@@ -53,6 +53,10 @@ public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> impl
         QueryWrapper<TOrder> wrapper = new QueryWrapper<>();
         wrapper.eq("order_no", orderNo);
         TOrder order = orderService.getOne(wrapper);
+        if (order==null){
+
+            throw new GuliException(20001,"订单不存在");
+        }
 
 
         //2. 设置微信支付参数
