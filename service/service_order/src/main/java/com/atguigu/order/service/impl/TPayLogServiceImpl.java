@@ -1,5 +1,6 @@
 package com.atguigu.order.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.atguigu.commonutils.ExceptionUtil;
 import com.atguigu.exceptionhandler.GuliException;
 import com.atguigu.order.entity.TOrder;
@@ -12,10 +13,12 @@ import com.atguigu.order.utils.WxPayProperties;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.wxpay.sdk.WXPayUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,7 @@ import java.util.Map;
  * @since 2020-09-04
  */
 @Service
+@Slf4j
 public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> implements TPayLogService {
 
     @Autowired
@@ -121,9 +125,10 @@ public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> impl
             return resultMap;
 
         } catch (Exception e) {
-           throw new GuliException(20001,ExceptionUtil.getMessage(e));
+           log.error(ExceptionUtil.getMessage(e));
         }
 
+        return null;
     }
 
 
@@ -134,6 +139,38 @@ public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> impl
      */
     @Override
     public void updateOrdersStatus(Map<String, String> map) {
+
+        //获取订单号
+        String orderNo = map.get("out_trade_no");
+
+        //根据订单号查询订单
+        QueryWrapper<TOrder> wrapper = new QueryWrapper<>();
+        wrapper.eq("order_no",orderNo);
+        TOrder one = orderService.getOne(wrapper);
+
+
+        //支付状态，如果是1，那就不用改。如果不是1，那就需要修改成1
+        //Integer转 int 就直接调用 intValue()方法
+        if (one.getStatus().intValue()==1){
+            return;
+        }
+
+
+        //到这里，说明订单的支付状态不是1，现在修改成1
+        one.setStatus(1);
+        orderService.updateById(one);
+
+        TPayLog payLog=new TPayLog();
+        payLog.setOrderNo(one.getOrderNo());//支付订单号
+        payLog.setPayTime(new Date());//支付时间
+        payLog.setPayType(1);//支付类型
+        payLog.setTotalFee(one.getTotalFee());//总金额(分)
+        payLog.setTradeState(map.get("trade_state"));//支付状态
+        payLog.setTransactionId(map.get("transaction_id")); //流水号
+        payLog.setAttr(JSONObject.toJSONString(map));
+        baseMapper.insert(payLog);//插入到支付日志表
+
+
 
     }
 }
