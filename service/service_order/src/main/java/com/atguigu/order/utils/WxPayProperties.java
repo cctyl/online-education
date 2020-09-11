@@ -18,4 +18,6 @@ public class WxPayProperties {
     private String partnerkey;
     private String notifyurl;
     private String qrurl;
+    private String orderqueryurl;
+
 }

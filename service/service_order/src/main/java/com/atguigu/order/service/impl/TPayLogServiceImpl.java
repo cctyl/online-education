@@ -71,12 +71,12 @@ public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> impl
 
             clientUtil.setHttps(true);
             clientUtil.post();
-            
-            
-        //4.获得响应
+
+
+            //4.获得响应
             String xml = clientUtil.getContent();
 
-        //5. 将xml转换为map
+            //5. 将xml转换为map
             Map<String, String> resultMap = WXPayUtil.xmlToMap(xml);
 
             Map map = new HashMap<>();
@@ -90,5 +90,50 @@ public class TPayLogServiceImpl extends ServiceImpl<TPayLogMapper, TPayLog> impl
         } catch (Exception e) {
             throw new GuliException(20001, ExceptionUtil.getMessage(e));
         }
+    }
+
+    /**
+     * 查询订单支付状态
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public Map<String, String> queryPayStatus(String orderNo) {
+
+        //1。封装参数
+        Map m = new HashMap<>();
+        m.put("appid", wxPayProperties.getAppid());
+        m.put("mch_id", wxPayProperties.getPartner());
+        m.put("out_trade_no", orderNo);
+        m.put("nonce_str", WXPayUtil.generateNonceStr());
+        try {
+            //2.发送请求
+            HttpClientUtil client = new HttpClientUtil(wxPayProperties.getOrderqueryurl());
+
+            client.setXmlParam(WXPayUtil.generateSignedXml(m, wxPayProperties.getPartnerkey()));
+
+            client.setHttps(true);
+            client.post();
+            //3、返回第三方的数据
+            String xml = client.getContent();
+            Map<String, String> resultMap = WXPayUtil.xmlToMap(xml);
+            return resultMap;
+
+        } catch (Exception e) {
+           throw new GuliException(20001,ExceptionUtil.getMessage(e));
+        }
+
+    }
+
+
+    /**
+     * 更新订单支付状态
+     *
+     * @param map
+     */
+    @Override
+    public void updateOrdersStatus(Map<String, String> map) {
+
     }
 }

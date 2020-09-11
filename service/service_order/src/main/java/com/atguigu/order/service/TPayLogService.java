@@ -16,4 +16,8 @@ import java.util.Map;
 public interface TPayLogService extends IService<TPayLog> {
 
     Map<String, Object> createQrCode(String orderNo);
+
+    Map<String, String> queryPayStatus(String orderNo);
+
+    void updateOrdersStatus(Map<String, String> map);
 }
