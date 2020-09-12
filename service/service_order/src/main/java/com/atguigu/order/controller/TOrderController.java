@@ -76,19 +76,14 @@ public class TOrderController {
      *
      * 查询用户是否购买此课程
      * @param courseId
-     * @param request
+     * @param memberId
      * @return
      */
-    @GetMapping("/buystatus/{courseId}")
+    @GetMapping("/buystatus/{courseId}/{memberId}")
     @ApiOperation("查询用户是否购买此课程")
-    public boolean isBuy(@ApiParam("课程id") @PathVariable("courseId")String courseId, HttpServletRequest request){
+    public boolean isBuy(@ApiParam("课程id") @PathVariable("courseId")String courseId,
+                         @ApiParam("用户id") @PathVariable("memberId") String memberId){
 
-        //获取用户id
-        String memberId = JWTUtils.getMemberIdByJwtToken(request);
-
-        if (StringUtils.isEmpty(memberId)){
-            return false;
-        }
         //创建条件
         QueryWrapper<TOrder> wrapper = new QueryWrapper<>();
         wrapper.eq("course_id",courseId);
