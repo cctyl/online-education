@@ -53,17 +53,17 @@ public class TPayController {
         Map<String,String> map = payService.queryPayStatus(orderNo);
 
         if (map==null){
-            return R.error().message("支付出错");
+            return R.error().message("支付出错").data("status",false);
         }
 
         //解析返回的数据，如果支付成功则返回提示
         if (map.get("trade_state").equals("SUCCESS")){
             payService.updateOrdersStatus(map);
-            return R.ok().message("支付成功");
+            return R.ok().message("支付成功").data("status",true);
         }
 
-        //到这里说明支付暂喂成功，返回等待的提示
-        return R.ok().message("支付中");
+        //到这里说明支付暂未成功，返等待的提示
+        return R.ok().data("status",false);
     }
 
 

@@ -12,7 +12,6 @@ import com.atguigu.vod.utils.ConstantProperties;
 import com.atguigu.vod.utils.InitVodClient;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
