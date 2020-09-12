@@ -7,6 +7,7 @@ import com.atguigu.order.entity.TOrder;
 import com.atguigu.order.service.TOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -70,5 +71,43 @@ public class TOrderController {
 
     }
 
+
+    /**
+     *
+     * 查询用户是否购买此课程
+     * @param courseId
+     * @param request
+     * @return
+     */
+    @GetMapping("/buystatus/{courseId}")
+    @ApiOperation("查询用户是否购买此课程")
+    public boolean isBuy(@ApiParam("课程id") @PathVariable("courseId")String courseId, HttpServletRequest request){
+
+        //获取用户id
+        String memberId = JWTUtils.getMemberIdByJwtToken(request);
+
+        if (StringUtils.isEmpty(memberId)){
+            return false;
+        }
+        //创建条件
+        QueryWrapper<TOrder> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id",courseId);
+        wrapper.eq("member_id",memberId);
+        wrapper.eq("status",1);
+
+
+        //查看订单是否存在
+        int count = orderService.count(wrapper);
+
+        if (count>0){
+            //已经购买
+            return true;
+
+        }else {
+            return  false;
+        }
+
+
+    }
 }
 
