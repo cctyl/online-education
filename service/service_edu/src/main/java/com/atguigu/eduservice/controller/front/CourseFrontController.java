@@ -1,10 +1,13 @@
 package com.atguigu.eduservice.controller.front;
 
+import com.alibaba.excel.util.StringUtils;
+import com.atguigu.commonutils.JWTUtils;
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.chapter.ChapterVo;
 import com.atguigu.eduservice.entity.vo.front.CourseFrontQuery;
 import com.atguigu.eduservice.entity.vo.front.CourseWebVo;
+import com.atguigu.eduservice.feign.OrderClient;
 import com.atguigu.eduservice.service.EduChapterService;
 import com.atguigu.eduservice.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,6 +16,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +30,9 @@ public class CourseFrontController {
 
     @Autowired
     private EduChapterService eduChapterService;
+
+    @Autowired
+    private OrderClient orderClient;
 
     /**
      * 分页条件查询课程列表
@@ -60,10 +67,19 @@ public class CourseFrontController {
      */
     @GetMapping("/detail/{courseId}")
     @ApiOperation("查询课程详情信息")
-    public R getCourseDetail(@ApiParam("课程id") @PathVariable("courseId") String courseId){
+    public R getCourseDetail(@ApiParam("课程id") @PathVariable("courseId") String courseId, HttpServletRequest request){
         //查询课程主体信息
         CourseWebVo course =    eduCourseService.getCourseDetailById(courseId);
 
+        //查询课程购买情况
+        String memberId = JWTUtils.getMemberIdByJwtToken(request);
+        if (StringUtils.isEmpty(memberId)){
+            //如果为空，就是没登陆，购买状态设置为false
+            course.setBuyStatus(false);
+        }else {
+            //不为空，调用order模块的接口，查询用互是否购买课程
+            orderClient.isBuy(courseId,memberId);
+        }
         //查询课程下面的章节和小节信息
         List<ChapterVo> courseChapterInfo = eduChapterService.getCourseChapterInfo(courseId);
 

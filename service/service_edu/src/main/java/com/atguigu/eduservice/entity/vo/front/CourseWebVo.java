@@ -53,6 +53,9 @@ public class CourseWebVo implements Serializable {
     private String subjectLevelTwo;
 
 
+    @ApiModelProperty(value = "是否购买")
+    private boolean buyStatus;
+
 
     //查询edu_course_description表获得
     @ApiModelProperty(value = "课程简介")
