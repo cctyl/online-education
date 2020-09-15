@@ -77,7 +77,7 @@ public class TOrderController {
      * 查询用户是否购买此课程
      * @param courseId
      * @param memberId
-     * @return
+     * @return true已购买，false，未购买
      */
     @GetMapping("/buystatus/{courseId}/{memberId}")
     @ApiOperation("查询用户是否购买此课程")
