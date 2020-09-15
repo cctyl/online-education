@@ -92,12 +92,14 @@ public class VodController {
      * @param id
      * @return
      */
-    @GetMapping("/playAuth/{id}/{courseId}")
+    @GetMapping("/playAuth/{id}")
     public R getPlayInfo(@PathVariable("id") @ApiParam("视频资源id") String id,
-                         HttpServletRequest httpServletRequest,
-                         @PathVariable("courseId") @ApiParam("课程id") String courseId) {
+                         HttpServletRequest httpServletRequest
+    ) {
 
-
+        String[] split = id.split("-");
+        String videoSourceId = split[0];
+        String courseId = split[1];
         try {
             //0.不登陆不允许观看
             String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
@@ -110,18 +112,16 @@ public class VodController {
             CourseInfoVo courseInfoOrder = eduClient.getCourseInfoOrder(courseId);
             boolean isFree = courseInfoOrder.getPrice().intValue() > 0 ? false : true;//false收费，true免费
 
-            if (!isFree){
+            if (!isFree) {
                 //收费
 
                 //2.判断用户是否购买此课程
                 boolean isBuy = orderClient.isBuy(courseId, memberIdByJwtToken);
-                if (!isBuy){
+                if (!isBuy) {
                     //未购买
                     return R.error().message("未购买");
                 }
             }
-
-
 
 
             //3.验证通过，开始获取凭证
@@ -133,7 +133,7 @@ public class VodController {
             GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
 
             //给请求添加参数：设置id
-            request.setVideoId(id);
+            request.setVideoId(videoSourceId);
 
             //执行请求后获得响应
             response = defaultAcsClient.getAcsResponse(request);
