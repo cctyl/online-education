@@ -65,20 +65,22 @@ public class CourseFrontController {
      * @param courseId
      * @return 课程信息以及课程下面的章节和小节
      */
-    @GetMapping("/detail/{courseId}")
+    @PostMapping("/detail/{courseId}")
     @ApiOperation("查询课程详情信息")
-    public R getCourseDetail(@ApiParam("课程id") @PathVariable("courseId") String courseId, HttpServletRequest request){
+    public R getCourseDetail(@ApiParam("课程id") @PathVariable("courseId") String courseId,
+                             HttpServletRequest httpServletRequest){
         //查询课程主体信息
-        CourseWebVo course =    eduCourseService.getCourseDetailById(courseId);
+        CourseWebVo course = eduCourseService.getCourseDetailById(courseId);
 
         //查询课程购买情况
-        String memberId = JWTUtils.getMemberIdByJwtToken(request);
-        if (StringUtils.isEmpty(memberId)){
+        String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
+
+        if (StringUtils.isEmpty(memberIdByJwtToken)){
             //如果为空，就是没登陆，购买状态设置为false
             course.setBuyStatus(false);
         }else {
             //不为空，调用order模块的接口，查询用互是否购买课程
-            orderClient.isBuy(courseId,memberId);
+            course.setBuyStatus(orderClient.isBuy(courseId, memberIdByJwtToken));
         }
         //查询课程下面的章节和小节信息
         List<ChapterVo> courseChapterInfo = eduChapterService.getCourseChapterInfo(courseId);

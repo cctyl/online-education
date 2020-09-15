@@ -5,8 +5,10 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
 import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.atguigu.commonutils.ExceptionUtil;
+import com.atguigu.commonutils.JWTUtils;
 import com.atguigu.commonutils.R;
 import com.atguigu.exceptionhandler.GuliException;
+import com.atguigu.vod.feign.OrderClient;
 import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 import com.atguigu.vod.utils.InitVodClient;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -26,9 +29,11 @@ public class VodController {
     @Autowired
     VodService vodService;
 
-
     @Autowired
     ConstantProperties constantProperties;
+
+    @Autowired
+    OrderClient orderClient;
 
     /**
      * 将视频上传到阿里云，返回一个视频id
@@ -78,10 +83,24 @@ public class VodController {
      * @return
      */
     @GetMapping("/playAuth/{id}")
-    public R getPlayInfo(@PathVariable("id") String id){
+    public R getPlayInfo(@PathVariable("id") String id, HttpServletRequest httpServletRequest){
+
+
 
 
         try {
+            //0.不登陆不允许观看
+            String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
+            if (memberIdByJwtToken==null){
+
+                return R.error().message("未登陆");
+            }
+
+            //1.判断这是否是收费课程 TODO
+
+            //2.判断用户是否购买此课程
+
+            //3.验证通过，开始获取凭证
             DefaultAcsClient defaultAcsClient = InitVodClient.initVodClient(constantProperties.getKeyid(), constantProperties.getKeysecret());
 
 
