@@ -17,6 +17,7 @@ import com.atguigu.vod.utils.InitVodClient;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -103,7 +104,7 @@ public class VodController {
         try {
             //0.不登陆不允许观看
             String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
-            if (memberIdByJwtToken == null) {
+            if (StringUtils.isEmpty(memberIdByJwtToken)) {
 
                 return R.error().message("未登陆");
             }
