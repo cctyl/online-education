@@ -89,7 +89,7 @@ public class VodController {
 
     /**
      * 根据视频id获取凭证
-     *
+     * TODO 根据用户是否登陆，释放购买来决定是否返回播放凭证，暂时遇到的问题是，拿不到前台传来的token
      * @param id
      * @return
      */
@@ -98,9 +98,9 @@ public class VodController {
                          HttpServletRequest httpServletRequest
     ) {
 
-        String[] split = id.split("-");
-        String videoSourceId = split[0];
-        String courseId = split[1];
+//        String[] split = id.split("-");
+//        String videoSourceId = split[0];
+//        String courseId = split[1];
         try {
             //0.不登陆不允许观看
             String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
@@ -109,7 +109,7 @@ public class VodController {
                 return R.error().message("未登陆");
             }
 
-            //1.判断这是否是收费课程，根据视频id获取
+         /*   //1.判断这是否是收费课程，根据视频id获取
             CourseInfoVo courseInfoOrder = eduClient.getCourseInfoOrder(courseId);
             boolean isFree = courseInfoOrder.getPrice().intValue() > 0 ? false : true;//false收费，true免费
 
@@ -123,7 +123,7 @@ public class VodController {
                     return R.error().message("未购买");
                 }
             }
-
+*/
 
             //3.验证通过，开始获取凭证
             DefaultAcsClient defaultAcsClient = InitVodClient.initVodClient(constantProperties.getKeyid(), constantProperties.getKeysecret());
@@ -134,7 +134,7 @@ public class VodController {
             GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
 
             //给请求添加参数：设置id
-            request.setVideoId(videoSourceId);
+            request.setVideoId(id);
 
             //执行请求后获得响应
             response = defaultAcsClient.getAcsResponse(request);
