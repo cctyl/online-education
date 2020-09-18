@@ -1,5 +1,6 @@
 package com.atguigu.vod.feign;
 
+import com.atguigu.commonutils.R;
 import com.atguigu.vod.entity.CourseInfoVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Component
 public interface EduClient {
 
-    @GetMapping("/eduservice/course/order/{id}")
-    @ApiOperation("获取课程信息")
-    public CourseInfoVo getCourseInfoOrder(@PathVariable("id") @ApiParam("课程ID") String id);
 
-
+    /**
+     * 根据视频id获取视频小节信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/eduservice/eduvideo/{id}")
+    public R getVideoInfoById(@ApiParam("小节id") @PathVariable("id") String id);
 }

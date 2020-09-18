@@ -11,7 +11,6 @@ public interface VodService {
 
     void removeVideoByIdList(List<String> videoIdList);
 
-    String getCourseIdByVid(String id);
 
     //TODO 添加一个方法，统计日播放数。获取播放凭证时就调用此方法，每次调用把redis中的key +1，key是 playNum
 

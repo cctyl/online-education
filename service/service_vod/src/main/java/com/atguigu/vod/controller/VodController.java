@@ -9,11 +9,13 @@ import com.atguigu.commonutils.JWTUtils;
 import com.atguigu.commonutils.R;
 import com.atguigu.exceptionhandler.GuliException;
 import com.atguigu.vod.entity.CourseInfoVo;
+import com.atguigu.vod.entity.EduVideo;
 import com.atguigu.vod.feign.EduClient;
 import com.atguigu.vod.feign.OrderClient;
 import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 import com.atguigu.vod.utils.InitVodClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -38,9 +41,12 @@ public class VodController {
     @Autowired
     OrderClient orderClient;
 
-
     @Autowired
     EduClient eduClient;
+
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     /**
      * 将视频上传到阿里云，返回一个视频id
@@ -99,29 +105,28 @@ public class VodController {
     ) {
 
         try {
-            //0.不登陆不允许观看
-            String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
-            if (StringUtils.isEmpty(memberIdByJwtToken)) {
 
-                return R.error().message("未登陆");
-            }
+            //1.判断这个课程是否可以试听，可以则往下走，不可以则返回错误信息
+            R r = eduClient.getVideoInfoById(id);
+            Map<String, Object> data = r.getData();
+            String json = (String)data.get("item");
+            EduVideo eduVideo = objectMapper.readValue(json, EduVideo.class);
 
-            //0.5根据资源id拿到课程id
-            String courseId = vodService.getCourseIdByVid(id);
+            if (!eduVideo.getIsFree()){
+                //不免费
+                //判断用户是否登陆
+                String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
+                if (StringUtils.isEmpty(memberIdByJwtToken)) {
 
+                    return R.error().message("未登陆");
+                }
 
-            //1.判断这是否是收费课程，根据视频id获取
-            CourseInfoVo courseInfoOrder = eduClient.getCourseInfoOrder(courseId);
-            boolean isFree = courseInfoOrder.getPrice().intValue() > 0 ? false : true;//false收费，true免费
+                //查询这个用户有没有购买这个课程
+                boolean buy = orderClient.isBuy(eduVideo.getCourseId(), memberIdByJwtToken);
+                if (!buy){
+                    //没买，返回提示
+                    return R.error().message("请购买此课程后再尝试播放");
 
-            if (!isFree) {
-                //收费
-
-                //2.判断用户是否购买此课程
-                boolean isBuy = orderClient.isBuy(courseId, memberIdByJwtToken);
-                if (!isBuy) {
-                    //未购买
-                    return R.error().message("未购买");
                 }
             }
 
@@ -141,7 +146,7 @@ public class VodController {
             String playAuth = response.getPlayAuth();
             return R.ok().data("playAuth", playAuth);
 
-        } catch (ClientException e) {
+        } catch (Exception e) {
             throw new GuliException(20001, "获取凭证失败:" + ExceptionUtil.getMessage(e));
         }
 
