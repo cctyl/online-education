@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EduClientFallback implements EduClient {
 
+
     @Override
     public EduVideo getVideoInfoByVId(String id) {
         return null;

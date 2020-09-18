@@ -16,8 +16,9 @@ public interface EduClient {
 
 
 
+
     /**
-     * 获取视频小节信息
+     * 用于Vod模块调用，播放前的权限判断
      * @param id
      * @return
      */

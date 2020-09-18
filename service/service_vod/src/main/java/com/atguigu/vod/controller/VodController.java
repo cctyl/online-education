@@ -108,6 +108,9 @@ public class VodController {
 
             //1.判断这个课程是否可以试听，可以则往下走，不可以则返回错误信息
             EduVideo eduVideo = eduClient.getVideoInfoByVId(id);
+            if (eduVideo==null){
+                return R.error();
+            }
 
             if (!eduVideo.getIsFree()){
                 //不免费
