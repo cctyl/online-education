@@ -21,5 +21,6 @@ public interface EduClient {
      * @param id
      * @return
      */
+    @GetMapping("/eduservice/eduvideo/vod/{id}")
     public EduVideo getVideoInfoByVId(@ApiParam("小节id") @PathVariable("id") String id);
 }

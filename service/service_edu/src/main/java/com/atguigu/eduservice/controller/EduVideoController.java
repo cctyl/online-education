@@ -98,6 +98,7 @@ public class EduVideoController {
      * @param id
      * @return
      */
+    @GetMapping("/vod/{id}")
     public EduVideo getVideoInfoByVId(@ApiParam("小节id") @PathVariable("id") String id){
         EduVideo eduVideo = eduVideoService.getById(id);
         return eduVideo;
