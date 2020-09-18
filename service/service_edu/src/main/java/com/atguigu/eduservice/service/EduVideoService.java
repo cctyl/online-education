@@ -17,4 +17,6 @@ public interface EduVideoService extends IService<EduVideo> {
 
 
      void removeVideosByChapterId(String id);
+
+    EduVideo getByVId(String id);
 }

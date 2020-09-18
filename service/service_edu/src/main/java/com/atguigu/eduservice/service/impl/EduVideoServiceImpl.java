@@ -90,4 +90,20 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     }
 
 
+    /**
+     * 根据云端视频资源id获取视频小节信息
+     * @param id
+     * @return
+     */
+    @Override
+    public EduVideo getByVId(String id) {
+
+        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+        wrapper.eq("video_source_id",id);
+        EduVideo eduVideo = baseMapper.selectOne(wrapper);
+
+        return eduVideo;
+    }
+
+
 }

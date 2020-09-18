@@ -100,7 +100,7 @@ public class EduVideoController {
      */
     @GetMapping("/vod/{id}")
     public EduVideo getVideoInfoByVId(@ApiParam("小节id") @PathVariable("id") String id){
-        EduVideo eduVideo = eduVideoService.getById(id);
+        EduVideo eduVideo = eduVideoService.getByVId(id);
         return eduVideo;
     }
 }
