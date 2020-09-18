@@ -98,9 +98,6 @@ public class VodController {
                          HttpServletRequest httpServletRequest
     ) {
 
-//        String[] split = id.split("-");
-//        String videoSourceId = split[0];
-//        String courseId = split[1];
         try {
             //0.不登陆不允许观看
             String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
@@ -109,7 +106,11 @@ public class VodController {
                 return R.error().message("未登陆");
             }
 
-         /*   //1.判断这是否是收费课程，根据视频id获取
+            //0.5根据资源id拿到课程id
+            String courseId = vodService.getCourseIdByVid(id);
+
+
+            //1.判断这是否是收费课程，根据视频id获取
             CourseInfoVo courseInfoOrder = eduClient.getCourseInfoOrder(courseId);
             boolean isFree = courseInfoOrder.getPrice().intValue() > 0 ? false : true;//false收费，true免费
 
@@ -123,7 +124,6 @@ public class VodController {
                     return R.error().message("未购买");
                 }
             }
-*/
 
             //3.验证通过，开始获取凭证
             DefaultAcsClient defaultAcsClient = InitVodClient.initVodClient(constantProperties.getKeyid(), constantProperties.getKeysecret());
@@ -146,6 +146,10 @@ public class VodController {
         }
 
     }
+
+
+
+    //TODO 添加一个接口，从redis中拿到日播放数，返回给调用者 key是 playNums（每日通过定时任务重置key）
 
 
 }

@@ -108,5 +108,10 @@ public class UcenterMemberController {
         return byId;
     }
 
+
+    //TODO 从redis中拿到日登陆数，返回给接口调用者。key是 loginNum（每日通过定时任务重置key）
+
+    //TODO 查询今日注册人数，返回给调用者
+
 }
 

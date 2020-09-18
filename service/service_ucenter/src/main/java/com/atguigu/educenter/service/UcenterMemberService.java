@@ -19,4 +19,8 @@ public interface UcenterMemberService extends IService<UcenterMember> {
     void register(RegisterVo registerVo);
 
     UcenterMember getByOpenId(String openid);
+
+    //TODO 添加一个日登陆数统计方法，每次登陆把登陆数 +1，存储到 redis中，key是loginNum
+
+    //TODO 添加一个查询日注册人数的方法，通过 查询 gmt_create来实现
 }

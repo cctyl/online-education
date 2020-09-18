@@ -41,4 +41,7 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseWebVo getCourseDetailById(String courseId);
 
     void updateViewCount(String courseId);
+
+
+    //TODO 查询今日新增的课程数，通过 gmt_create来实现
 }

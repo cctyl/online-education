@@ -12,6 +12,7 @@ import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 
 import com.atguigu.vod.utils.InitVodClient;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,4 +92,7 @@ public class VodServiceImpl implements VodService {
             throw new GuliException(20001,ExceptionUtil.getMessage(e));
         }
     }
+
+
+
 }

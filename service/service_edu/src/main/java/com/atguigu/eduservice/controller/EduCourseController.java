@@ -183,5 +183,8 @@ public class EduCourseController {
 
 
     }
+
+
+    //TODO 新增一个接口，从数据库中查出当日新增课程数。然后返回给调用者
 }
 
