@@ -107,10 +107,7 @@ public class VodController {
         try {
 
             //1.判断这个课程是否可以试听，可以则往下走，不可以则返回错误信息
-            R r = eduClient.getVideoInfoById(id);
-            Map<String, Object> data = r.getData();
-            String json = (String)data.get("item");
-            EduVideo eduVideo = objectMapper.readValue(json, EduVideo.class);
+            EduVideo eduVideo = eduClient.getVideoInfoByVId(id);
 
             if (!eduVideo.getIsFree()){
                 //不免费

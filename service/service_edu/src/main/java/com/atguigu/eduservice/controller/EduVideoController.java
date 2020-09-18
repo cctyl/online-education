@@ -91,5 +91,16 @@ public class EduVideoController {
         return R.ok().data("item",byId);
     }
 
+
+
+    /**
+     * 用于Vod模块调用，播放前的权限判断
+     * @param id
+     * @return
+     */
+    public EduVideo getVideoInfoByVId(@ApiParam("小节id") @PathVariable("id") String id){
+        EduVideo eduVideo = eduVideoService.getById(id);
+        return eduVideo;
+    }
 }
 
