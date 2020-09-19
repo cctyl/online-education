@@ -151,4 +151,18 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
         return member;
     }
+
+    /**
+     * 查询日注册人数
+     * @param day
+     * @return
+     */
+    @Override
+    public Integer getDailyRegister(String day) {
+
+        return baseMapper.getDailyRegister(day);
+
+    }
+
+
 }
