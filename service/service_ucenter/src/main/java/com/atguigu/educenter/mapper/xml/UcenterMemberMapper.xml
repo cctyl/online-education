@@ -3,7 +3,7 @@
 <mapper namespace="com.atguigu.educenter.mapper.UcenterMemberMapper">
 
 
-    <select id="getDailyRegister" resultMap="java.lang.Integer" >
+    <select id="getDailyRegister" resultType="java.lang.Integer" >
 
         SELECT COUNT(*) FROM statistics_daily WHERE DATE(gmt_create) = #{day}
     </select>
