@@ -41,6 +41,8 @@ public class DailyController {
 
     //TODO 调用 vod模块，拿到日播放数
 
+
+
     //TODO 调用eduservice模块，获取日新增的课程数
 
 }

@@ -75,6 +75,7 @@ public class EduCourseController {
 
     /**
      * 供远程调用的接口
+     *
      * @param id
      * @return
      */
@@ -186,5 +187,13 @@ public class EduCourseController {
 
 
     //TODO 新增一个接口，从数据库中查出当日新增课程数。然后返回给调用者
+    @GetMapping("/dailyCourse/{day}")
+    @ApiOperation("拿到每日新增的课程数")
+    public R getDailyCourseAddition(@PathVariable("day") String day) {
+
+        Integer count = eduCourseService.getDailyCourseAddition(day);
+
+        return R.ok().data("courseNum",count);
+    }
 }
 
