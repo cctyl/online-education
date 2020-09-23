@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashMap;
 import java.util.List;
@@ -303,6 +304,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     }
 
+
+    /**
+     * 更新课程点击数
+     * @param courseId
+     */
     @Override
     public void updateViewCount(String courseId) {
 
@@ -324,6 +330,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         Integer count = baseMapper.getDailyCourseAddition(day);
         return count;
     }
+
+
 
 
 }

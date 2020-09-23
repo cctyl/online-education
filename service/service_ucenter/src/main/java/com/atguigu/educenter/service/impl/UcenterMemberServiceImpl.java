@@ -68,7 +68,6 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         }
 
        //密码是否正确
-
         if ( !ucenterMember.getPassword().equals(password)) {
             throw new GuliException(20001,"登陆失败");
         }
@@ -174,7 +173,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     }
 
     /**
-     * 只要被调用一次，就把redis中的数字+1
+     * 只要被调用一次，就把redis中的日登陆人数+1
      */
     @Override
     public void addDailyLoginNum() {
