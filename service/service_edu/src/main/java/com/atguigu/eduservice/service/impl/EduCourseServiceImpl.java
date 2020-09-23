@@ -312,4 +312,18 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
 
+    /**
+     * 获取日新增的课程数
+     * @param day
+     * @return
+     */
+    @Override
+    public Integer getDailyCourseAddition(String day) {
+
+
+        Integer count = baseMapper.getDailyCourseAddition(day);
+        return count;
+    }
+
+
 }

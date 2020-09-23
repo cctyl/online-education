@@ -55,4 +55,8 @@ public interface EduCourseMapper extends BaseMapper<EduCourse> {
             "  WHERE" +
             "    c.id = #{courseId}")
     CourseWebVo getCourseDetail(String courseId);
+
+
+    @Select("SELECT COUNT(*) FROM edu_course WHERE DATE(gmt_create) = #{day}")
+    Integer getDailyCourseAddition(String day);
 }
