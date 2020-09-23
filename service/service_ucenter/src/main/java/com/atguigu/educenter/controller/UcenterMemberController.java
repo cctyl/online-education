@@ -131,7 +131,9 @@ public class UcenterMemberController {
     @GetMapping("/count/loginNum")
     public Integer getDailyLoginNum(){
 
+        Integer count = memberService.getDailyLoginNum();
 
+        return count;
     }
 
 }

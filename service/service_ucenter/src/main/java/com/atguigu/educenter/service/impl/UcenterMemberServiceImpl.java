@@ -30,13 +30,12 @@ import javax.management.Query;
 public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, UcenterMember> implements UcenterMemberService {
 
     @Autowired
-    private  RedisUtils redisUtils;
-
-
+    private RedisUtils redisUtils;
 
 
     /**
      * 用户登陆
+     *
      * @param loginmember
      * @return token
      */
@@ -46,36 +45,36 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
         String mobile = loginmember.getMobile();
 
-        String password =MD5.encrypt( loginmember.getPassword());   //先进行md5加密在对比
+        String password = MD5.encrypt(loginmember.getPassword());   //先进行md5加密在对比
 
         Integer isDisabled = loginmember.getIsDisabled();
 
         //手机号和密码都不能为空
-        if (StringUtils.isEmpty(mobile)|| StringUtils.isEmpty(password)){
-            throw new GuliException(20001,"登陆失败");
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
+            throw new GuliException(20001, "登陆失败");
 
         }
 
 
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
-        wrapper.eq("mobile",mobile);
+        wrapper.eq("mobile", mobile);
 
         UcenterMember ucenterMember = baseMapper.selectOne(wrapper);
         //手机号是否存在
-        if (ucenterMember==null){
+        if (ucenterMember == null) {
 
-            throw new GuliException(20001,"登陆失败");
+            throw new GuliException(20001, "登陆失败");
         }
 
-       //密码是否正确
-        if ( !ucenterMember.getPassword().equals(password)) {
-            throw new GuliException(20001,"登陆失败");
+        //密码是否正确
+        if (!ucenterMember.getPassword().equals(password)) {
+            throw new GuliException(20001, "登陆失败");
         }
 
 
         //判断用户是否被禁用
-        if (ucenterMember.getIsDisabled()==1){
-            throw new GuliException(20001,"登陆失败");
+        if (ucenterMember.getIsDisabled() == 1) {
+            throw new GuliException(20001, "登陆失败");
         }
 
 
@@ -96,6 +95,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
     /**
      * 用户注册
+     *
      * @param registerVo
      */
     @Override
@@ -107,29 +107,29 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         String password = registerVo.getPassword();
 
         //非空判断
-        if (StringUtils.isEmpty(code)||StringUtils.isEmpty(mobile)||StringUtils.isEmpty(nickname)||StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(code) || StringUtils.isEmpty(mobile) || StringUtils.isEmpty(nickname) || StringUtils.isEmpty(password)) {
 
-            throw new GuliException(20001,"注册失败");
+            throw new GuliException(20001, "注册失败");
         }
 
         String codeCheck = redisUtils.get(mobile);
-        if (codeCheck==null){
-            throw new GuliException(20001,"验证码错误");
+        if (codeCheck == null) {
+            throw new GuliException(20001, "验证码错误");
         }
-        if (!codeCheck.equals(code)){
+        if (!codeCheck.equals(code)) {
 
-            throw new GuliException(20001,"验证码错误");
+            throw new GuliException(20001, "验证码错误");
         }
 
         //判断手机号是否重复
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
 
-        wrapper.eq("mobile",mobile);
+        wrapper.eq("mobile", mobile);
         Integer integer = baseMapper.selectCount(wrapper);
         //只要记录条数大于等于1，就认为这个号码重复了
-        if (integer>0){
+        if (integer > 0) {
 
-            throw new GuliException(20001,"手机号已存在！");
+            throw new GuliException(20001, "手机号已存在！");
         }
 
         //存入数据库
@@ -146,6 +146,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
     /**
      * 根据openid查询用户是否曾经用微信登陆
+     *
      * @param openid
      */
     @Override
@@ -153,7 +154,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
 
-        wrapper.eq("openid",openid);
+        wrapper.eq("openid", openid);
 
         UcenterMember member = baseMapper.selectOne(wrapper);
 
@@ -162,6 +163,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
     /**
      * 查询日注册人数
+     *
      * @param day
      * @return
      */
@@ -181,7 +183,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         //从redis中拿 loginNum
         String loginNumStr = redisUtils.get("loginNum");
         //判断有没有
-        if (StringUtils.isEmpty(loginNumStr)){
+        if (StringUtils.isEmpty(loginNumStr)) {
             loginNumStr = "0";//没有就赋值
         }
 
@@ -192,9 +194,35 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         loginNum++;
 
         //重新放回redis
-        redisUtils.set("loginNum",loginNum+"");
+        redisUtils.set("loginNum", loginNum + "");
 
 
+    }
+
+
+    /**
+     * 从redis中拿出日登陆人数返回，并且重设日登陆人数
+     *
+     * @return
+     */
+    @Override
+    public Integer getDailyLoginNum() {
+
+        String loginNumStr = redisUtils.get("loginNum");
+
+        //判断有没有,是空的，就直接返回0，并且重设redis
+        if (StringUtils.isEmpty(loginNumStr)) {
+            redisUtils.set("loginNum", "0");
+            return 0;
+        }
+        //不为空，转换成int
+        int loginNum = Integer.parseInt(loginNumStr);
+
+        //重设记录数
+        redisUtils.set("loginNum", "0");
+
+        //返回日登陆数
+        return loginNum;
     }
 
 

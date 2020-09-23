@@ -25,6 +25,8 @@ public interface UcenterMemberService extends IService<UcenterMember> {
 
     void addDailyLoginNum();
 
+    Integer getDailyLoginNum();
 
-    //TODO 添加一个查询日注册人数的方法，通过 查询 gmt_create来实现
+
+
 }
