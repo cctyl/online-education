@@ -32,6 +32,9 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     @Autowired
     private  RedisUtils redisUtils;
 
+
+
+
     /**
      * 用户登陆
      * @param loginmember
@@ -78,6 +81,12 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
 
         //到这里之后，登陆成功
+
+
+        //记录登陆数
+        addDailyLoginNum();
+
+
         //生成token,把用户id和用户昵称作为数据生成token
         String jwtToken = JWTUtils.getJwtToken(ucenterMember.getId(), ucenterMember.getNickname());
 
@@ -161,6 +170,31 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
     public Integer getDailyRegister(String day) {
 
         return baseMapper.getDailyRegister(day);
+
+    }
+
+    /**
+     * 只要被调用一次，就把redis中的数字+1
+     */
+    @Override
+    public void addDailyLoginNum() {
+
+        //从redis中拿 loginNum
+        String loginNumStr = redisUtils.get("loginNum");
+        //判断有没有
+        if (StringUtils.isEmpty(loginNumStr)){
+            loginNumStr = "0";//没有就赋值
+        }
+
+        //转成int
+        int loginNum = Integer.parseInt(loginNumStr);
+
+        //数字加1
+        loginNum++;
+
+        //重新放回redis
+        redisUtils.set("loginNum",loginNum+"");
+
 
     }
 

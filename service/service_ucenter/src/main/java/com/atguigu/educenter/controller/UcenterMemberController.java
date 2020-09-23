@@ -46,6 +46,8 @@ public class UcenterMemberController {
 
         String token= memberService.login(member);
 
+
+
         return R.ok().data("token",token);
 
     }
@@ -111,6 +113,7 @@ public class UcenterMemberController {
 
 
     //TODO 从redis中拿到日登陆数，返回给接口调用者。key是 loginNum（每日通过定时任务重置key）
+
 
 
     /**
