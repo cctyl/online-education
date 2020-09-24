@@ -128,6 +128,8 @@ public class VodServiceImpl implements VodService {
             playNumStr = "0";
         }
         int count = Integer.parseInt(playNumStr);
+        //重置今日的播放数
+        redisUtils.set("playNum","0");
         return  count;
 
 

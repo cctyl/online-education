@@ -157,7 +157,6 @@ public class VodController {
     }
 
 
-    //TODO 添加一个接口，从redis中拿到日播放数，返回给调用者 key是 playNums（每日通过定时任务重置key）
 
     @GetMapping("/count/playNum")
     public Integer getDailyPlayNum() {
