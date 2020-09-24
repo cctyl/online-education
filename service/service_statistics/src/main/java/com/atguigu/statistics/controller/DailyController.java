@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/statistics/daily")
 public class DailyController {
 
-    //TODO 调用ucenter模块，拿到日登陆数
+
 
     @Autowired
     DailyService dailyService;
@@ -41,7 +41,7 @@ public class DailyController {
 
     //TODO 调用 vod模块，拿到日播放数
 
-
+    //TODO 调用ucenter模块，拿到日登陆数
 
     //TODO 调用eduservice模块，获取日新增的课程数
 
