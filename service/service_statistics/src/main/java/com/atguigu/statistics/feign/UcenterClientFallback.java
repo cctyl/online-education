@@ -9,4 +9,9 @@ public class UcenterClientFallback implements UcenterClient {
     public R getDailyRegister(String day) {
         return null;
     }
+
+    @Override
+    public Integer getDailyLoginNum() {
+        return 0;
+    }
 }

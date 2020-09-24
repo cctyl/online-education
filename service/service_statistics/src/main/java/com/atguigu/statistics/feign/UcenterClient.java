@@ -19,4 +19,11 @@ public interface UcenterClient {
      */
     @GetMapping("/educenter/member/count/{day}")
     public R getDailyRegister(@ApiParam("查询日期") @PathVariable("day") String day);
+
+    /**
+     * 获取今日登陆人数
+     * @return 今日登陆人数
+     */
+    @GetMapping("/educenter/member/count/loginNum")
+    public Integer getDailyLoginNum();
 }

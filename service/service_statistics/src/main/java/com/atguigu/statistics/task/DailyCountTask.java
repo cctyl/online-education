@@ -3,6 +3,7 @@ package com.atguigu.statistics.task;
 import cn.hutool.core.date.DateUtil;
 import com.atguigu.commonutils.R;
 import com.atguigu.statistics.feign.UcenterClient;
+import com.atguigu.statistics.feign.VodClient;
 import com.atguigu.statistics.service.DailyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,10 @@ public class DailyCountTask {
     private DailyService dailyService;
 
     @Autowired
-    UcenterClient ucenterClient;
+    private UcenterClient ucenterClient;
+
+    @Autowired
+    private VodClient vodClient;
 
     /**
      * 定时统计日登陆数、日播放数、日注册人数、日新增课程数
@@ -31,15 +35,18 @@ public class DailyCountTask {
 
 
 
-        //TODO 统计日注册人数
+        //统计日注册人数
         R result = ucenterClient.getDailyRegister(today);
         Integer registerCount = (Integer) result.getData().get("count");
 
-        //TODO 调用 vod模块，拿到日播放数
+        //调用 vod模块，拿到日播放数
+        Integer dailyPlayNum = vodClient.getDailyPlayNum();
 
-        //TODO 调用ucenter模块，拿到日登陆数
+        //调用ucenter模块，拿到日登陆数
+        Integer dailyLoginNum = ucenterClient.getDailyLoginNum();
 
-        //TODO 调用eduservice模块，获取日新增的课程数
+        //调用eduservice模块，获取日新增的课程数
+
     }
 
 

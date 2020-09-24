@@ -157,7 +157,10 @@ public class VodController {
     }
 
 
-
+    /**
+     * 拿到日播放数
+     * @return
+     */
     @GetMapping("/count/playNum")
     public Integer getDailyPlayNum() {
 
