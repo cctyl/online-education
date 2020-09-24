@@ -24,26 +24,8 @@ public class DailyController {
 
 
 
-    @Autowired
-    DailyService dailyService;
-    /**
-     * 统计日注册人数
-     * @param day
-     * @return
-     */
-    @PostMapping("regsiterCount/{day}")
-    public R  countRegister(@PathVariable("day") String day){
 
-        dailyService.countRegister(day);
 
-        return R.ok();
-    }
-
-    //TODO 调用 vod模块，拿到日播放数
-
-    //TODO 调用ucenter模块，拿到日登陆数
-
-    //TODO 调用eduservice模块，获取日新增的课程数
 
 }
 
