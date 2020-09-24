@@ -40,7 +40,7 @@ public class DailyCountTask {
     /**
      * 定时统计日登陆数、日播放数、日注册人数、日新增课程数
      */
-    @Scheduled(cron = "1 15 21 * * *")
+    @Scheduled(cron = "1 58 23 * * *")
     public void dailyCount(){
         String today = DateUtil.formatDate(new Date());
 
