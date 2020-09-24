@@ -116,5 +116,22 @@ public class VodServiceImpl implements VodService {
 
     }
 
+    /**
+     * 获取日播放数
+     * @return
+     */
+    @Override
+    public Integer getDailyPlayNum() {
+
+        String playNumStr = redisUtils.get("playNum");
+        if (StringUtils.isEmpty(playNumStr)){
+            playNumStr = "0";
+        }
+        int count = Integer.parseInt(playNumStr);
+        return  count;
+
+
+    }
+
 
 }

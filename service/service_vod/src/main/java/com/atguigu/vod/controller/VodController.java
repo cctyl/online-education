@@ -96,6 +96,7 @@ public class VodController {
     /**
      * 根据视频id获取凭证
      * TODO 根据用户是否登陆，释放购买来决定是否返回播放凭证，暂时遇到的问题是，拿不到前台传来的token
+     *
      * @param id
      * @return
      */
@@ -108,11 +109,11 @@ public class VodController {
 
             //1.判断这个课程是否可以试听，可以则往下走，不可以则返回错误信息
             EduVideo eduVideo = eduClient.getVideoInfoByVId(id);
-            if (eduVideo==null){
+            if (eduVideo == null) {
                 return R.error();
             }
 
-            if (!eduVideo.getIsFree()){
+            if (!eduVideo.getIsFree()) {
                 //不免费
                 //判断用户是否登陆
                 String memberIdByJwtToken = JWTUtils.getMemberIdByJwtToken(httpServletRequest);
@@ -123,7 +124,7 @@ public class VodController {
 
                 //查询这个用户有没有购买这个课程
                 boolean buy = orderClient.isBuy(eduVideo.getCourseId(), memberIdByJwtToken);
-                if (!buy){
+                if (!buy) {
                     //没买，返回提示
                     return R.error().message("请购买此课程后再尝试播放");
 
@@ -156,9 +157,14 @@ public class VodController {
     }
 
 
-
     //TODO 添加一个接口，从redis中拿到日播放数，返回给调用者 key是 playNums（每日通过定时任务重置key）
 
+    @GetMapping("/count/playNum")
+    public Integer getDailyPlayNum() {
+
+        Integer count = vodService.getDailyPlayNum();
+        return count;
+    }
 
 
 }
