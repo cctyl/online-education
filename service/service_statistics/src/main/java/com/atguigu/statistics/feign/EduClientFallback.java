@@ -10,7 +10,7 @@ public class EduClientFallback  implements EduClient {
 
 
     @Override
-    public R getDailyCourseAddition(String day) {
-        return null;
+    public Integer getDailyCourseAddition(String day) {
+        return 0;
     }
 }

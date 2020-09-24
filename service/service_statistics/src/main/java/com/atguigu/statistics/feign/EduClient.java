@@ -21,6 +21,6 @@ public interface EduClient {
      */
     @GetMapping("/eduservice/course/dailyCourse/{day}")
     @ApiOperation("拿到每日新增的课程数")
-    public R getDailyCourseAddition(@PathVariable("day") String day) ;
+    public Integer getDailyCourseAddition(@PathVariable("day") String day);
 
 }

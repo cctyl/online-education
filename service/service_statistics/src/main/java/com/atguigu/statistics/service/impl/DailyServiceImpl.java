@@ -31,7 +31,7 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
      * 调用远程接口，统计日注册人数
      * @param day
      */
-    @Override
+  /*  @Override
     public void countRegister(String day) {
         R result = ucenterClient.getDailyRegister(day);
         Integer count = (Integer) result.getData().get("count");
@@ -47,5 +47,5 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
         baseMapper.insert(daily);
 
 
-    }
+    }*/
 }
