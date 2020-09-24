@@ -2,6 +2,7 @@ package com.atguigu.statistics.task;
 
 import cn.hutool.core.date.DateUtil;
 import com.atguigu.commonutils.R;
+import com.atguigu.statistics.entity.Daily;
 import com.atguigu.statistics.feign.EduClient;
 import com.atguigu.statistics.feign.UcenterClient;
 import com.atguigu.statistics.feign.VodClient;
@@ -34,10 +35,12 @@ public class DailyCountTask {
     private EduClient eduClient;
 
 
+
+
     /**
      * 定时统计日登陆数、日播放数、日注册人数、日新增课程数
      */
-    @Scheduled(cron = "1 58 23 * * *")
+    @Scheduled(cron = "1 15 21 * * *")
     public void dailyCount(){
         String today = DateUtil.formatDate(new Date());
 
@@ -55,17 +58,19 @@ public class DailyCountTask {
         //调用eduservice模块，获取日新增的课程数
         Integer dailyCourseAddition = eduClient.getDailyCourseAddition(today);
 
+        Daily daily = new Daily();
+        daily.setCourseNum(dailyCourseAddition);
+        daily.setLoginNum(dailyLoginNum);
+        daily.setVideoViewNum(dailyPlayNum);
+        daily.setRegisterNum(registerCount);
+        daily.setDateCalculated(today);
+
+        //统计到数据库中
+        dailyService.dailyCount(daily);
+
+        log.info("完成了今天的数据统计："+daily.toString());
     }
 
-/*
-
-    @Scheduled(cron = "0/2 * * * * *" )
-    public void testTask(){
-
-
-        log.info("这是一条错误信息");
-    }
-*/
 
 
 }

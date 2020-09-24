@@ -24,28 +24,12 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
 
 
 
-    @Autowired
-    UcenterClient ucenterClient;
-
-    /**
-     * 调用远程接口，统计日注册人数
-     * @param day
-     */
-  /*  @Override
-    public void countRegister(String day) {
-        R result = ucenterClient.getDailyRegister(day);
-        Integer count = (Integer) result.getData().get("count");
-
-        Daily daily = new Daily();
-        daily.setRegisterNum(count);
-        daily.setDateCalculated(day);
-        daily.setVideoViewNum(RandomUtils.nextInt(100,200));
-        daily.setLoginNum(RandomUtils.nextInt(100,200));
-        daily.setCourseNum(RandomUtils.nextInt(100,200));
 
 
+    @Override
+    public void dailyCount(Daily daily) {
         baseMapper.insert(daily);
+    }
 
 
-    }*/
 }
