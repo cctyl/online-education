@@ -7,12 +7,12 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.atguigu.commonutils.ExceptionUtil;
+import com.atguigu.commonutils.RedisUtils;
 import com.atguigu.exceptionhandler.GuliException;
 import com.atguigu.vod.service.VodService;
 import com.atguigu.vod.utils.ConstantProperties;
 
 import com.atguigu.vod.utils.InitVodClient;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,10 @@ public class VodServiceImpl implements VodService {
 
     @Autowired
     ConstantProperties constantProperties;
+
+    @Autowired
+    RedisUtils redisUtils;
+
 
     @Override
     public String uploadVideo(MultipartFile file) {
@@ -93,6 +97,24 @@ public class VodServiceImpl implements VodService {
         }
     }
 
+    /**
+     * 播放时调用此方法，使播放数加一
+     */
+    @Override
+    public void addPlayNum() {
+
+        String playNumStr = redisUtils.get("playNum");
+        if (StringUtils.isEmpty(playNumStr)){
+            playNumStr = "0";
+        }
+
+        int count = Integer.parseInt(playNumStr);
+        count++;
+        redisUtils.set("playNum",count+"");
+
+
+
+    }
 
 
 }
