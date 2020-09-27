@@ -16,4 +16,5 @@ public interface DailyService extends IService<Daily> {
     void dailyCount(Daily daily);
 
 
+    Daily getDailyCountByDate(String day);
 }
