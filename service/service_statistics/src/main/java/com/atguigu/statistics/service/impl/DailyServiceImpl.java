@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  * 网站统计日数据 服务实现类
@@ -32,18 +34,16 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
         baseMapper.insert(daily);
     }
 
+
     /**
      * 根据日期查询统计数据
-     * @param day
+     * @param begin
+     * @param end
      * @return
      */
     @Override
-    public Daily getDailyCountByDate(String day) {
-
-        QueryWrapper<Daily> wrapper = new QueryWrapper<>();
-        wrapper.eq("date_calculated",day);
-        Daily daily = baseMapper.selectOne(wrapper);
-        return daily;
+    public Map<String, Object> getDailyCount(String begin, String end) {
+        return null;
     }
 
 
