@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -53,7 +54,8 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
         List<Daily> dailyList = baseMapper.selectList(wrapper);
 
         //每一列单独封装成一个list
-        List<String> dateList = new ArrayList<>();//日期数组
+       /*
+       List<String> dateList = new ArrayList<>();//日期数组
         List<Integer> registerList = new ArrayList<>(); //注册人数
         List<Integer> loginList = new ArrayList<>();//登陆人数
         List<Integer> viewList = new ArrayList<>();//播放次数
@@ -69,14 +71,22 @@ public class DailyServiceImpl extends ServiceImpl<DailyMapper, Daily> implements
             courseList.add(temp.getCourseNum());
 
         }
+*/
+       //改用Stream流的方式
+        List<String> dateList = dailyList.stream().map(Daily::getDateCalculated).collect(Collectors.toList());
+        List<Integer> registerList = dailyList.stream().map(Daily::getRegisterNum).collect(Collectors.toList());
+        List<Integer> loginList = dailyList.stream().map(Daily::getLoginNum).collect(Collectors.toList());
+        List<Integer> viewList = dailyList.stream().map(Daily::getVideoViewNum).collect(Collectors.toList());
+        List<Integer> courseList = dailyList.stream().map(Daily::getCourseNum).collect(Collectors.toList());
+
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("dateList",dateList);
-        map.put("registerList",registerList);
-        map.put("loginList",loginList);
-        map.put("viewList",viewList);
-        map.put("courseList",courseList);
+        map.put("dateList", dateList);
+        map.put("registerList", registerList);
+        map.put("loginList", loginList);
+        map.put("viewList", viewList);
+        map.put("courseList", courseList);
 
         return map;
     }
