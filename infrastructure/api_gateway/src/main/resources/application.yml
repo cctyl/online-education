@@ -10,18 +10,46 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: SERVICE-ACL
-          uri: lb://SERVICE-ACL
+        - id: service-edu
+          uri: lb://service-edu
           predicates:
-            - Path=/*/acl/** # 路径匹配
-        - id: SERVICE-EDU
-          uri: lb://SERVICE-EDU
-          predicates:
-            - Path=/eduservice/** # 路径匹配
-        - id: SERVICE-UCENTER
-          uri: lb://SERVICE-UCENTER
-          predicates:
-            - Path=/ucenter/** # 路径匹配
+            - Path = /eduservice/**   #只要访问的是/eduservice/** 这个路径，gateway就去访问lb:service-edu/eduservice/** ，然后返回结果给用户
+
+        - id: service-cms
+            uri: lb://service-cms
+            predicates:
+              - Path=/educms/**
+
+        - id: service-msm
+            uri: lb://service-msm
+            predicates:
+              - Path=/edumsm/**
+
+        - id: service-order
+            uri: lb://service-order
+            predicates:
+              - Path=/orderservice/**
+
+        - id: service-oss
+            uri: lb://service-oss
+            predicates:
+              - Path=/eduoss/**
+
+        - id: service-statistics
+            uri: lb://service-statistics
+            predicates:
+              - Path=/statistics/**
+
+        - id: service-ucenter
+            uri: lb://service-ucenter
+            predicates:
+              - Path=/educenter/**,/api/ucenter/**
+
+        - id: service-vod
+            uri: lb://service-vod
+            predicates:
+              - Path=/eduvod/**
+
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
