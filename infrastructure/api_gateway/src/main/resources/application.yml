@@ -13,42 +13,42 @@ spring:
         - id: service-edu
           uri: lb://service-edu
           predicates:
-            - Path = /eduservice/**   #只要访问的是/eduservice/** 这个路径，gateway就去访问lb:service-edu/eduservice/** ，然后返回结果给用户
+            - Path=/eduservice/**   #只要访问的是/eduservice/** 这个路径，gateway就去访问lb:service-edu/eduservice/** ，然后返回结果给用户
 
         - id: service-cms
-            uri: lb://service-cms
-            predicates:
-              - Path=/educms/**
+          uri: lb://service-cms #匹配后提供服务的路由地址
+          predicates:
+            - Path=/educms/**       # 断言，路径相匹配的进行路由
 
         - id: service-msm
-            uri: lb://service-msm
-            predicates:
-              - Path=/edumsm/**
+          uri: lb://service-msm
+          predicates:
+            - Path=/edumsm/**
 
         - id: service-order
-            uri: lb://service-order
-            predicates:
-              - Path=/orderservice/**
+          uri: lb://service-order
+          predicates:
+            - Path=/orderservice/**
 
         - id: service-oss
-            uri: lb://service-oss
-            predicates:
-              - Path=/eduoss/**
+          uri: lb://service-oss
+          predicates:
+            - Path=/eduoss/**
 
         - id: service-statistics
-            uri: lb://service-statistics
-            predicates:
-              - Path=/statistics/**
+          uri: lb://service-statistics
+          predicates:
+            - Path=/statistics/**
 
         - id: service-ucenter
-            uri: lb://service-ucenter
-            predicates:
-              - Path=/educenter/**,/api/ucenter/**
+          uri: lb://service-ucenter
+          predicates:
+            - Path=/educenter/**,/api/ucenter/**
 
         - id: service-vod
-            uri: lb://service-vod
-            predicates:
-              - Path=/eduvod/**
+          uri: lb://service-vod
+          predicates:
+            - Path=/eduvod/**
 
     nacos:
       discovery:
