@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api("处理教师登陆的类")
 @RequestMapping("/eduservice/user")
-@CrossOrigin //解决跨域问题
+ //解决跨域问题
 public class EduLoginController {
 
     @PostMapping("/login")

@@ -31,7 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/eduservice/teacher")
 @Slf4j
-@CrossOrigin
+
 public class EduTeacherController {
 
     @Autowired

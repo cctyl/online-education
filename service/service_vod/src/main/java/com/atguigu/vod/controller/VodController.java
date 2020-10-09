@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin
+
 @RequestMapping("/eduvod/video")
 public class VodController {
 

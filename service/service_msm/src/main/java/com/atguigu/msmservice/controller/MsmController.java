@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/edumsm/msm")
-@CrossOrigin
+
 public class MsmController {
 
 

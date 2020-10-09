@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduservice/comment/front")
-@CrossOrigin
+
 public class CommentFrontController {
 
     @Autowired
