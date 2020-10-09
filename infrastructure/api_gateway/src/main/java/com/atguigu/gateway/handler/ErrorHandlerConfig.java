@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * 覆盖默认的异常处理
  */
-@Configuration
-@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class})
+/*@Configuration
+@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class})*/
 public class ErrorHandlerConfig {
 
     private final ServerProperties serverProperties;
