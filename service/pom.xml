@@ -19,6 +19,7 @@
         <module>service_order</module>
         <module>service_statistics</module>
         <module>canal_client</module>
+        <module>service-acl</module>
 
     </modules>
 
