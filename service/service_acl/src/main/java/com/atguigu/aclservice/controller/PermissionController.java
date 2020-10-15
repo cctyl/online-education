@@ -16,11 +16,10 @@ import java.util.List;
  * </p>
  *
  * @author testjava
- * @since 2020-01-12
+ * @since 2020-10-15
  */
 @RestController
 @RequestMapping("/admin/acl/permission")
-//@CrossOrigin
 public class PermissionController {
 
     @Autowired
