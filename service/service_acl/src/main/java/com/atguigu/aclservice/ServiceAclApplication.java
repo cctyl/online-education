@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan("com.atguigu")
+@ComponentScan({"com.atguigu"})
 @MapperScan("com.atguigu.aclservice.mapper")
 public class ServiceAclApplication {
 
