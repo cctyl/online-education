@@ -40,5 +40,19 @@ public class PermissionController {
     }
 
 
+    /**
+     * 删除权限以及下面的子权限
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public R deletePermission(@PathVariable("id") String id){
+
+        permissionService.deletePermissionById(id);
+        return R.ok();
+    }
+
+
+
 }
 
