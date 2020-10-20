@@ -2,6 +2,7 @@ package com.atguigu.aclservice.mapper;
 
 import com.atguigu.aclservice.entity.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
     List<String> selectAllPermissionValue();
 
     List<Permission> selectPermissionByUserId(String userId);
+
+
 }

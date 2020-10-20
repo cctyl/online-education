@@ -142,6 +142,9 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return result;
     }
 
+
+
+
     /**
      * 判断用户是否系统管理员
      * @param userId
@@ -209,7 +212,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
 
 
-    //============================自己实现如下=============================
+//=======================================自己实现如下========================================
 
     /**
      * 递归的查询所有菜单
@@ -250,6 +253,23 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     }
 
 
+    /**
+     * 递归的删除权限以及下面的子权限
+     * @param id
+     */
+    @Override
+    public void deletePermissionById(String id) {
 
+       //0.先把id作为pid，查询所有子权限
+        List<Permission> permissionList = baseMapper.selectList(new QueryWrapper<Permission>().eq("pid", id));
+        //1.遍历子权限，判断子权限下面是否还子权限
+        permissionList.forEach(permission -> {
+            //将子权限的id作为pid再次调用本方法
+            deletePermissionById(permission.getId());
+        });
+
+        //2.删除当前权限
+        baseMapper.deleteById(id);
+    }
 
 }

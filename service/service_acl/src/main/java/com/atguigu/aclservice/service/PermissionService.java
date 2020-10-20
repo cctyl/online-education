@@ -16,7 +16,6 @@ import java.util.List;
  */
 public interface PermissionService extends IService<Permission> {
 
-    List<Permission> getAllPermisson();
 
     //获取全部菜单
     List<Permission> queryAllMenu();
@@ -35,5 +34,8 @@ public interface PermissionService extends IService<Permission> {
 
     List<JSONObject> selectPermissionByUserId(String id);
 
+//==================自己实现如下=========================
+    List<Permission> getAllPermisson();
 
+    void deletePermissionById(String id);
 }
