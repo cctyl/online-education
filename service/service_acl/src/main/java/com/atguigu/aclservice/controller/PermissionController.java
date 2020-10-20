@@ -53,6 +53,21 @@ public class PermissionController {
     }
 
 
+    /**
+     * 给指定的角色分配权限
+     * @return
+     */
+    @ApiOperation("给指定的角色分配权限")
+    @PostMapping("/assign")
+    public R doAssign(String roleId,String[] permissionId){
+
+        permissionService.assignPermissonForRole(roleId,permissionId);
+
+        return R.ok();
+
+    }
+
+
 
 }
 
