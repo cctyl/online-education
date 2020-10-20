@@ -38,4 +38,6 @@ public interface PermissionService extends IService<Permission> {
     List<Permission> getAllPermisson();
 
     void deletePermissionById(String id);
+
+    void assignPermissonForRole(String roleId, String[] permissionId);
 }

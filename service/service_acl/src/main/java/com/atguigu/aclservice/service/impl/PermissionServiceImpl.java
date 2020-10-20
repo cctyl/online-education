@@ -272,4 +272,25 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         baseMapper.deleteById(id);
     }
 
+    /**
+     * 给这个指定的角色分配指定的权限
+     * @param roleId
+     * @param permissionIdList
+     */
+    @Override
+    public void assignPermissonForRole(String roleId, String[] permissionIdList) {
+
+        //0.将用户id和权限id封装到RolePermission对象，再集体存入数据库
+
+        List<RolePermission> list = new ArrayList<>();
+        for (String permissionId : permissionIdList) {
+
+            list.add(new RolePermission(roleId,permissionId));
+        }
+
+        rolePermissionService.saveBatch(list);
+
+
+    }
+
 }
