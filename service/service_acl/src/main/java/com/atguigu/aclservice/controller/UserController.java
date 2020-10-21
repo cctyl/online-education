@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin/acl/user")
-//@CrossOrigin
+
 public class UserController {
 
     @Autowired
