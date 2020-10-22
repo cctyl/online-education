@@ -50,6 +50,11 @@ spring:
           predicates:
             - Path=/eduvod/**
 
+        - id: service-acl
+            uri: lb://service-acl
+            predicates:
+              - Path=/admin/acl/**
+
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
